@@ -1,0 +1,23 @@
+# ==========================================
+# MÓDULOS DE PROCESSAMENTO (PENSAMENTO ESQUERDO)
+# ==========================================
+
+# 1. Orquestração e Lógica de Agentes
+langchain
+langgraph
+langchain-community
+# 2. Leitura de Documentos e RAG
+docling
+llama-index
+
+# 3. OCR Especializado para Notas Fiscais (Instalaremos via Docker depois para manter a estabilidade)
+
+# 4. Avaliação e Anti-Alucinação (Harness)
+lm-eval
+
+# 5. Interfaces de Usuário (Front-end do Chat)
+chainlit
+streamlit
+
+# 6. Voz e Transcrição (Whisper - Item 4)
+openai-whisper

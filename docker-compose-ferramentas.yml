@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # 1. A Memória (Banco Vetorial para o RAG)
+  pgvector:
+    image: ankane/pgvector:latest
+    container_name: cerebro_pgvector
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: masterkey123
+      POSTGRES_DB: memoria_vetorial
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  # 2. O Olho (OCR para Notas Fiscais Específicas)
+  paddleocr-api:
+    build: ./docker_paddleocr
+    container_name: olho_paddleocr
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  # 3. Automação e Integrações (n8n - Item 4)
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    container_name: n8n_automacao
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - NODE_ENV=production
+      - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=America/Sao_Paulo
+    volumes:
+      - n8n_data:/home/node/.n8n
+    restart: unless-stopped
+    command: start
+
+  # 4. Pesquisa Privada na Web (SearXNG - Item 4)
+  searxng:
+    image: searxng/searxng
+    container_name: buscador_searxng
+    ports:
+      - "8080:8080"
+    volumes:
+      - searxng_data:/etc/searxng
+    environment:
+      - SEARXNG_BASE_URL=http://localhost:8080/
+    restart: unless-stopped
+
+volumes:
+  pg_data:
+  n8n_data:
+  searxng_data:
