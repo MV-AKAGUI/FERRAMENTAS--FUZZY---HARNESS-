@@ -1,51 +1,60 @@
-# Inventário da Arquitetura "Arquiteto Neural"
-*Filosofia: Homeostase Computacional (Privacidade e Processamento Local)*
+# Status Oficial: Projeto Arquiteto Neural (Ferramentas, Fuzzy & Harness)
+*Documento vivo atualizado com a Filosofia de Homeostase Computacional (Privacidade e Processamento Local)*
 
-Abaixo está o mapeamento de todos os componentes da nossa infraestrutura. Tudo está instalado, mas o nível de comunicação (integração) entre eles varia, conforme detalhado na coluna de status.
-
-## 1. Cérebros e Modelos de IA (Ollama)
-* **Onde roda:** Instalado nativamente no Windows (Ollama).
-* **Status:** 🟢 Instalado, rodando e pronto para receber requisições.
-* **Componentes:**
-  - `Llama 3.1` (Generalista / Roteador)
-  - `SaulLM` (Especialista Jurídico)
-  - `Qwen 2.5` (Matemático / Financeiro / Controladoria)
-  - `Mistral-Nemo` (Investigador)
-  - `Nomic-Embed-Text` (Gerador de Embeddings para RAG)
-* **Comunicação:** Ainda aguardando o LangGraph conectar a Interface do Usuário a eles.
-
-## 2. Banco de Dados e Memória (PostgreSQL + pgvector)
-* **Onde roda:** Contêiner Docker (`cerebro_pgvector` na porta 5432).
-* **Status:** 🟢 Instalado e rodando.
-* **Comunicação:** Isolado no momento. Aguardando integração com o LlamaIndex para injetar os documentos locais (PDFs e arquivos).
-
-## 3. Microserviços e Ferramentas (Docker)
-* **Onde roda:** Contêineres isolados via `docker-compose-ferramentas.yml`.
-* **Status:** 🟢 Todos instalados e rodando.
-* **Componentes:**
-  - `PaddleOCR API` (Porta 8000): O "Leitor" de Notas Fiscais e PDFs pesados.
-  - `SearXNG` (Porta 8080): O Buscador privado na Web.
-  - `n8n` (Porta 5678): Automação de fluxos e webhooks.
-* **Comunicação:** Rodando de forma independente. O n8n e a Interface precisarão ser ensinados a mandar requisições para a porta do OCR e do SearXNG.
-
-## 4. Engenharia de Software e CI/CD (Harness Gitness)
-* **Onde roda:** Contêiner Docker (`harness_gitness` na porta 3000).
-* **Status:** 🟢 Instalado, rodando, e conta de Administrador criada.
-* **Comunicação:** O Gitness já gerencia os próprios arquivos internos. Futuramente as automações do n8n e os códigos gerados pelas IAs podem fazer commits diretos nele.
-
-## 5. Interface do Usuário (Streamlit)
-* **Onde roda:** Ambiente Virtual Python (`.venv` via `app_chat_st.py` na porta 8001).
-* **Status:** 🟢 Instalada e rodando na tela do usuário.
-* **Comunicação:** É atualmente uma "casca". Exibe mensagens visuais, mas ainda não se comunica com o backend.
-
-## 6. Orquestração e Roteamento (LangChain / LangGraph)
-* **Onde roda:** Bibliotecas instaladas no `.venv`.
-* **Status:** 🟡 Bibliotecas instaladas, mas o código não foi escrito.
-* **Comunicação:** Esta é a "Cola" do sistema. É o LangGraph que fará a Interface (Item 5) conversar com os Cérebros (Item 1) e com o Banco de Dados (Item 2).
+Este documento detalha o estágio atual de todas as aplicações e conceitos abordados no nosso roadmap, listando o que está rodando, o que está isolado e o que falta conectar.
 
 ---
 
-### Resumo das Integrações Atuais
-- **Instalado e Rodando:** 100% das ferramentas e infraestrutura.
-- **Se comunicando de forma autônoma:** 0% (A infraestrutura subiu isolada propositalmente por segurança).
-- **Próximo Passo Crítico:** Escrever o código do Orquestrador (LangGraph) para ligar os "fios" entre a Interface, os Modelos (Ollama) e as Ferramentas.
+## 1. 🧠 Inteligência Artificial (Os "Doutores" e o Roteador)
+* **Ferramenta:** Ollama (Servidor Local de LLMs).
+* **Status de Instalação:** 🟢 100% Instalado e Funcional nos bastidores.
+* **Comunicação:** 🔴 "Mudos" na interface. Aguardando a fiação do LangGraph.
+* **Componentes Baixados:**
+  - **Llama 3.1:** O Cérebro Generalista e "Maestro" do roteamento.
+  - **SaulLM (O Dr. Jurídico):** Especialista em leis, contratos e jargões do direito.
+  - **Qwen 2.5 (O Especialista Financeiro):** Analista de balanços, DREs, FP&A e números empresariais.
+  - **Mistral-Nemo (O Investigador):** Visão sistêmica, faro investigativo e cruzamento de informações.
+  - **Nomic-Embed-Text:** O tradutor silencioso que gera embeddings vetoriais.
+* **O que falta:** Criar a regra (o script Python) que permite que eles recebam as mensagens digitadas pelo usuário no chat.
+
+## 2. 🎨 Interface de Comunicação (O Rosto)
+* **Ferramenta:** Streamlit (Arquivo `app_chat_st.py` na porta 8001).
+* **Status de Instalação:** 🟢 100% Instalado e Rodando.
+* **Comunicação:** 🔴 "Casca Vazia". O campo de texto existe, mas não processa a mensagem ainda.
+* **O que falta:** Vincular o botão de "Enviar" com o roteador (LangGraph).
+
+## 3. 🔀 Orquestração e Roteamento Lógico (O Sistema Nervoso)
+* **Ferramentas:** LangChain e LangGraph (Bibliotecas Python no `.venv`).
+* **Status de Instalação:** 🟡 Bibliotecas instaladas.
+* **Comunicação:** 🔴 Código não escrito.
+* **O que falta:** Esta é a peça central que devemos construir agora. Precisamos escrever as regras do LangGraph para que ele intercepte a mensagem do Streamlit e decida: *"É sobre finanças? Envie para o Qwen. É sobre processo? Envie para o Dr. Saul."*
+
+## 4. 🗄️ Memória de Longo Prazo e RAG (O Cofre de Arquivos)
+* **Ferramentas:** PostgreSQL + extensão `pgvector` (via Docker na porta 5432).
+* **Status de Instalação:** 🟢 100% Instalado e Rodando.
+* **Comunicação:** 🔴 Banco vazio e isolado.
+* **Ferramentas de Ingestão (LlamaIndex e Docling):** Instaladas no `.venv`.
+* **O que falta:** Escrever o script que pega seus PDFs locais, usa o *Docling* para ler o texto (mesmo tabelas complexas), transforma em vetores com o *Nomic* e salva dentro do *Postgres*.
+
+## 5. 🛠️ Microserviços de Extração e Integração (Os "Braços e Olhos")
+*Todos rodando de forma isolada em contêineres Docker, respeitando a Homeostase Computacional.*
+* **PaddleOCR (A porta 8000):** O nosso "Olho" para extrair textos de Notas Fiscais e imagens escaneadas. 🟢 Instalado.
+* **SearXNG (A porta 8080):** O "Buscador Anônimo". Permite pesquisar na internet sem vazar dados. 🟢 Instalado.
+* **n8n (A porta 5678):** A nossa "Secretária de Automação", para integrar com e-mails, webhooks, etc. 🟢 Instalado.
+* **Busca Fuzzy (Fuzzy Matching):** 🟡 Conceito mapeado para ser usado em cruzamento de dados investigativos. Faltam bibliotecas específicas de Python (como `thefuzz` ou `rapidfuzz`) que precisaremos baixar quando o Investigador (Mistral-Nemo) for ativado.
+
+## 6. 🏭 Engenharia de Software e CI/CD (O Gerente da Fábrica)
+* **Ferramenta:** Harness Open Source / Gitness (via Docker na porta 3000).
+* **Status de Instalação:** 🟢 100% Instalado. Você já criou a conta de Administrador.
+* **Comunicação:** 🟡 Operando como "Cofre" independente no momento.
+* **O que falta:** Futuramente, integraremos o Harness aos Agentes (ex: MetaGPT), permitindo que a IA escreva códigos, submeta ao Harness para testes automáticos, e faça atualizações de sistema sozinhas.
+
+---
+
+## 🎯 Conclusão e Ordem de Ação
+Toda a nossa infraestrutura e maquinário de "Hardware simulado" (Docker, Bancos, Modelos, UI) foi **montada com sucesso e está operante**.
+
+**As próximas tarefas lógicas (o que falta vincular/baixar):**
+1. **(Ação Imediata)** Escrever a lógica do LangGraph no arquivo do Streamlit para o "Dr. Saul" e o "Qwen" ganharem voz no chat.
+2. Escrever o script de injeção RAG para popular o Banco de Dados (Postgres) com seus arquivos.
+3. Baixar bibliotecas de busca *Fuzzy* (`pip install rapidfuzz`) para refinar as investigações de dados do Mistral-Nemo.
