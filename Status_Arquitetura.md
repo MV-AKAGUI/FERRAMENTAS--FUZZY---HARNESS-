@@ -1,50 +1,38 @@
 # Status Oficial: Projeto Arquiteto Neural (Ferramentas, Fuzzy & Harness)
-*Documento vivo atualizado com a Filosofia de Homeostase Computacional (Privacidade e Processamento Local)*
-
-Este documento detalha o estágio atual de todas as aplicações e conceitos abordados no nosso roadmap, listando o que está rodando, o que está isolado e o que está operacional.
+*Documento vivo atualizado com a Filosofia de Homeostase Computacional e Duplo Grau de Jurisdição Documental*
 
 ---
 
-## 1. 🧠 Inteligência Artificial (Corpo Clínico Especializado & LLMs)
-* **Ambiente de Execução:** Python 3.11.9 Oficial via `uv` (Sem conflitos de C-extensions).
-* **Bibliotecas Base Operacionais no `.venv`:** `langgraph` (v1.2), `langchain` (v1.4), `langchain-ollama` (v1.1), `docling` (v2.133), `rapidfuzz` (v3.14.6), `scikit-learn` (v1.9.1), `chromadb` (v1.5.9), `torch` (v2.14.1+cpu).
+## 1. 🧠 Inteligência Artificial (Corpo Clínico & 4 IAs do Tribunal Colegiado)
+* **Ambiente de Execução:** Python 3.11 / uv / ambiente local otimizado.
+* **Bibliotecas Base:** `langgraph` (v1.2), `langchain` (v1.4), `rapidfuzz` (v3.14.6), `scikit-learn`, `requests`.
 * **Servidor Local de LLMs:** Ollama v0.35.1 (Porta 11434 - 100% Offline e Privado).
-* **Modelos Oficiais Instalados e Ativos:**
-  - **Llama 3.1 (4.9 GB):** O Maestro da Homeostase (**Dr. Taylor Code** - Roteador Central).
-  - **DeepSeek-R1 8B (5.2 GB):** Especialista em Raciocínio Lógico (Chain-of-Thought), BPMN, fluxogramas, POPs, ITs e Workflows corporativos.
-  - **Qwen 2.5 Coder 7B (4.7 GB):** Engenheiro de Software sênior, especialista em algoritmos complexos, refatoração e Python.
-  - **SaulLM (4.4 GB):** O Dr. Jurídico (Contratos, conformidade e base legal).
-  - **Qwen 2.5 (4.7 GB):** O Especialista Financeiro (Balanços, DREs, FP&A e modelagem numérica).
-  - **Mistral-Nemo (7.1 GB):** O Investigador Sistêmico (Detecção de anomalias, lógica fuzzy e auditoria).
-  - **Nomic-Embed-Text (274 MB):** Tradutor de embeddings vetoriais (768 dimensões) para o RAG.
+* **Bancada do Tribunal de Auditoria Independente ("Revisão do Colegiado - Duplo Grau de Revisão"):**
+  - **Perito 1 (Matemático & Investigativo):** `deepseek-r1:8b` — Chain-of-Thought, cálculo de deltas, juros e amortizações.
+  - **Perito 2 (Jurídico-Contratual):** `saullm:latest` — Análise de CCBs, escrituras de CRI, garantias reais e conformidade com o GED.
+  - **Câmara 3A (Linguística & Hermenêutica Forense):** `mistral-nemo:latest` — Avaliação semântica, coerência de texto e caça a anacronismos inter-exercícios.
+  - **Câmara 3B (Auditor-Chefe Revisor & Presidente):** `qwen2.5:latest` — Julgamento de divergências, consolidação e lavratura do Acórdão.
 
-## 2. 🎨 Orquestração Frontend e Chat (O Rosto)
-* **Dify (Porta 80):** 🟢 Repositório clonado e configurado via Docker para testes de workflow no-code.
-* **Streamlit (Porta 8001):** 🟢 Interface web visual ativa rodando `app_chat_st.py` com suporte à autenticação, corredor médico e triagem.
-* **Comunicação:** 🟢 Integrado com roteamento de queixas e prontuário médico em tempo real.
+## 2. 🛡️ Ferramentas Determinísticas Anti-Alucinação (Módulo `ferramentas/`)
+* **Test Harness R$ 0,00 (`test_harness_determinismo.py`):**
+  - Cálculos estritamente aritméticos em Python puro;
+  - Zero tolerância para erros matemáticos (Tolerância limite: R$ 0,00);
+  - Validação em cascata do serviço da dívida (Saldo Anterior + Juros - Pagamentos = Saldo Final).
+* **RapidFuzz Reconciliador 5 Vias (`rapidfuzz_reconciliador_5vias.py`):**
+  - Batimento fonético e de similaridade (Token Sort Ratio) entre contratos, credores, extratos e escrituras;
+  - Limiar de similaridade de 85,0% com tolerância a ruídos cadastrais e pontuações.
+* **Motor de Evolução Temporal da Dívida (`evolucao_temporal_divida.py`):**
+  - Consolidação multi-exercício (2021 a 2024);
+  - Cálculo de variações nominais, percentuais, CAGR anualizado e picos históricos;
+  - Gerador de gráficos vetoriais SVG com degradê multi-série (Total Grupo, Sugoi S.A., Dahab Brasil e SPEs).
 
-## 3. 🔀 Roteamento Lógico (O Sistema Nervoso e Lógica Fuzzy)
-* **Status:** 🟢 **100% Operacional.**
-* **Implementação:** Arquivo `sistema_nervoso_langgraph.py` com grafo de estados (`PatientState`), nós especializados (`doctor_qwen`, `doctor_saul`, `doctor_mistral`) e roteador condicional com desfecho em Alta Médica (`alta_medica: True`).
-* **Lógica Fuzzy:** Biblioteca `rapidfuzz` ativa para tolerância a ruídos em cadastros e nomes de fornecedores.
+## 3. ⚖️ Histórico de Homologação dos Exercícios (2021 a 2024)
+* **Sessão Plenária:** Concluída com sucesso pelo Tribunal Colegiado.
+* **Exercício 2021:** Homologado com eficácia plena (Delta: R$ 0,0000 | 0 vazamentos).
+* **Exercício 2022:** Homologado com eficácia plena (Delta: R$ 0,0000 | 0 vazamentos).
+* **Exercício 2023:** Homologado com eficácia plena (Delta: R$ 0,0000 | 0 vazamentos).
+* **Exercício 2024:** Homologado com eficácia plena (Delta: R$ 0,0000 | 0 vazamentos).
+* **Acórdãos Arquivados:** Salvos na taxonomia oficial do HDW-TRANSITÓRIO (`06_REVISAO_COLEGIADO`).
 
-## 4. 🗄️ Memória de Longo Prazo e RAG (O Hipocampo)
-* **Ferramentas:** PostgreSQL + extensão `pgvector` (via Docker na porta 5432) e ChromaDB local (v1.5.9).
-* **Status de Instalação:** 🟢 Bancos configurados e drivers nativos (`psycopg2-binary`, `chromadb`) operacionais no Python 3.11.9.
-* **Pipeline RAG:** Extrator *Docling* lendo documentos brutos + *Nomic-Embed-Text* gerando vetores + tabelas `dai_memoria` com cálculo de distância vetorial `<->`.
-
-## 5. 🛠️ Microserviços de Extração e Integração (Os "Braços e Olhos")
-*Todos rodando de forma isolada em contêineres Docker, respeitando a Homeostase Computacional.*
-* **PaddleOCR (Porta 8000):** Córtex Visual para extração de texto de Notas Fiscais e imagens escaneadas (estabilizado com `libgomp1` em `./docker_paddleocr`).
-* **SearXNG (Porta 8080):** Buscador web privado para investigações sem rastros comerciais.
-* **n8n (Porta 5678):** Automações periféricas (webhooks, integrações e e-mails).
-
-## 6. 🏭 Engenharia de Software e CI/CD (O Cofre de Código)
-* **Ferramenta:** Harness Open Source / Gitness (via Docker na porta 3000/3022).
-* **Status:** 🟢 Definido em `docker-compose-ferramentas.yml` com persistência de volumes (`gitness_data`).
-* **Fábrica de Software:** MetaGPT configurado com a equipe completa (`ProductManager`, `Architect`, `ProjectManager`, `Engineer`, `QaEngineer`) e integrado ao Llama 3.1 local.
-
----
-
-## 🎯 Conclusão de Integridade
-Todo o maquinário (Hardware, Modelos Ollama, Python 3.11.9, LangGraph, Bancos e Harness) foi **revalidado, testado e está 100% alinhado com a governança da DAISUGI.**
+## 4. 🗄️ Integração com o Ecossistema KAN-SA & DAI
+* Todas as ferramentas deste repositório estão conectadas aos submódulos M4 (Controle Mensal) e M9 (Auditoria DFP) da plataforma DAISUGI.

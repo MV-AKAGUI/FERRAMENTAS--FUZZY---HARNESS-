@@ -1,78 +1,21 @@
-# Knowledge Transfer (KT): Dai Smart Reception Framework
-
-> **Nota:** Este documento consolida a evolução conceitual, técnica e arquitetural de todo o nosso ecossistema de inteligência artificial. Ele serve como o registro definitivo da nossa jornada de ideação, para que qualquer futuro desenvolvimento, sistema ou integração não perca a essência de onde viemos e das decisões que tomamos.
-
----
-
-## 1. O Histórico Evolutivo do Projeto (A Jornada Profunda)
-
-O **Dai Smart Reception Framework** é o resultado de uma longa cadeia de experimentações arquiteturais. Não começamos codificando telas; começamos conceituando uma agência inteligente de desenvolvimento e, iterativamente, refinamos a forma como os usuários interagiriam com ela.
-
-### Prólogo: A Gênese Visual no Dify
-Nossa jornada começou com o **Dify**, uma plataforma que usamos como laboratório inicial para entender a orquestração de LLMs e fluxos de trabalho visuais. O Dify nos deu a primeira fundação sobre como estruturar *pipelines* de conhecimento e interações, mas logo percebemos que para escalar e manter controle absoluto (Homeostase Computacional), precisaríamos descer o nível para código puro e infraestrutura proprietária na nossa máquina.
-
-### Fase 1: MetaGPT, Dr. Taylor Code e a Equipe de Desenvolvedores
-Com a necessidade de ir além de um simples chatbot, aterrissamos no conceito de uma "Agência de Software Autônoma". 
-Adotamos os princípios do **MetaGPT**, que não lida com a IA como um ser único, mas como uma **Equipe de Especialistas**. Definimos papéis de desenvolvimento claros baseados em Procedimentos Operacionais Padrão (SOPs): Product Manager, Arquiteto de Software, Engenheiro e QA. 
-Nesse momento de estruturação, consolidou-se a figura do **Dr. Taylor Code** como o Arquiteto líder/Orquestrador técnico responsável por gerenciar a infraestrutura local (Docker, Ollama e LLMs rodando offline para segurança máxima). Solucionamos gargalos técnicos severos nesta fase, como a compilação do motor de Visão Computacional (PaddleOCR/RapidOCR com `libgomp1`) para dar "olhos" à nossa equipe de devs.
-
-### Fase 2: O Caos da Concorrência, Harness Gitness e a Triagem Fuzzy
-Com múltiplos especialistas disponíveis na nossa equipe (os modelos Llama 3.1, Qwen, SaulLM, Mistral), ficou evidente que os pedidos dos usuários não poderiam cair diretamente na equipe de desenvolvimento, sob o risco de colapsar o sistema com alocações erradas. 
-Para isso, levantamos o **Harness Gitness** via Docker na porta `http://localhost:3000/`. A ideia do Gitness era trazer a cultura de DevOps para dentro do ecossistema: um repositório Git local com esteiras de CI/CD para organizar as "entregas de código" dos nossos agentes.
-Ao mesmo tempo, para organizar a entrada de pedidos, testamos a **Triagem Fuzzy** (via `RapidFuzz`), uma "roleta matemática" que cruzava o texto do usuário com um catálogo interno.
-* **A Descoberta:** Percebemos que o Fuzzy era rápido, mas cego para contexto. Ele lidava com "tons de cinza binários" de strings, mas se o usuário digitasse algo ambíguo ("o fio da manga"), o sistema corria o risco de acionar o especialista errado na pipeline do Gitness.
-
-### Fase 3: O Paradigma da Clínica B2B e o Nascimento da Dai
-Para sanar a cegueira de contexto, criamos uma regra imutável de design: **"A inteligência de triagem deve fazer uma pergunta antes de dar uma resposta se não tiver certeza absoluta"**. 
-A "roleta de triagem" fria ganhou um rosto, empatia e nome: **Dai**. Inspirada na técnica florestal *Daisugi* — uma base forte da qual emergem troncos perfeitamente retos e especialistas —, a Dai tornou-se a Recepcionista Universal.
-A nossa metáfora de sistema foi elevada. Deixamos de ser apenas um roteador de devs em uma tela preta e nos tornamos uma **Clínica Corporativa B2B**. A Dai fica na recepção (um Front-End sofisticado construído em Streamlit, com login por perfis de cliente/diretoria), escuta as queixas e direciona o paciente para o "Corredor Médico" correto, onde a equipe do Dr. Taylor aguarda.
-
-### Fase 4: O Prontuário Vetorial (RAG) e o Sistema Nervoso (LangGraph)
-A evolução final do ensaio foi substituir a fragilidade do Fuzzy pela memória profunda. A Dai passou a abrir **"Prontuários"** usando **RAG Leve** (banco PostgreSQL com a extensão vetorial `pgvector` e `nomic-embed-text`). O sistema agora tem Natureza Evolutiva: cada problema resolvido enriquece a memória semântica da clínica. 
-Para automatizar a passagem do bastão entre a recepção da Dai, a esteira do Gitness e as "salas" dos especialistas, implementamos o nosso "arreio/harness lógico" em código puro através do **LangGraph**, que atua como o Sistema Nervoso determinístico do framework.
+# KT — Histórico Evolutivo das Ferramentas DAISUGI (Fuzzy & Harness)
+*Registro cronológico e arquitetural para a DAI, Dr. Taylor e Tribunal Colegiado*
 
 ---
 
-## 2. Inventário Bruto Total (Tudo o que baixamos no Ensaio)
+### Marco 1: Fundação Anti-Alucinação (Test Harness R$ 0,00)
+- Criação do conceito de isolamento aritmético determinístico;
+- LLMs não fazem contas financeiras — delegam ao Test Harness Python puro.
 
-Para garantir rastreabilidade completa, listamos abaixo **todas** as infraestruturas e as 286 bibliotecas Python que baixamos, testamos e validamos na nossa pasta raiz `FERRAMENTAS--FUZZY---HARNESS-`.
+### Marco 2: Tolerância a Ruídos e Reconciliação (RapidFuzz 5 Vias)
+- Integração da biblioteca RapidFuzz para cruzamento de credores e numeração de CCBs;
+- Reconciliação de 5 vias: Contrato declarado x Extrato bancário x CCB GED x DFP Contábil x Termo de Quitação.
 
-### 2.1. Plataformas, Modelos de IA e Visão (Docker e Ollama)
-* **Dify** (Histórico): O motor inicial de fluxos e orquestração visual que inspirou a arquitetura.
-* **Harness Gitness** (Docker): Servidor Git e plataforma de CI/CD local, operando na porta `http://localhost:3000/`.
-* **Llama 3.1** (Meta): Modelo "Maestro", responsável pelo raciocínio geral e controle da equipe de devs.
-* **Qwen** (Alibaba): O Especialista alocado para a sala de Finanças e Projetos Críticos.
-* **SaulLM**: O Especialista alocado para a sala Jurídica e de Contratos.
-* **Mistral / Mistral-Nemo**: O Especialista alocado para Pesquisa e Investigação.
-* **nomic-embed-text**: O modelo matemático responsável pela vetorização do RAG (Embeddings).
-* **PaddleOCR / RapidOCR** (Docker): O motor de Visão Computacional de leitura de imagens.
-* **PostgreSQL + pgvector** (Docker): A imagem do banco de dados configurada como nosso Cofre/Memória Semântica.
+### Marco 3: Tribunal de Auditoria Independente ("Revisão do Colegiado - Duplo Grau de Revisão")
+- Orquestração via LangGraph StateGraph;
+- Bancada das 4 IAs locais (DeepSeek-R1, SaulLM, Mistral-Nemo, Qwen 2.5);
+- Caçador forense de anacronismos e segregação estrita de exercícios temporais.
 
-### 2.2. A Lista Completa do `requirements.txt`
-```text
-absl-py==2.5.0, accelerate==1.15.0, aiofiles==25.1.0, aiohappyeyeballs==2.7.1, aiohttp==3.14.3, aiosignal==1.4.0, aiosqlite==0.22.1, altair==6.3.0, annotated-doc==0.0.5, annotated-types==0.8.0, antlr4-python3-runtime==4.9.3, anyio==4.15.1, asyncer==0.0.18, attrs==26.1.0, audioop-lts==0.2.2, banks==2.5.1, beautifulsoup4==4.15.0, bidict==0.24.1, certifi==2026.7.22, cffi==2.1.1, chainlit==2.11.0, chardet==6.0.0.post1, charset-normalizer==3.5.2, chevron==0.14.0, click==8.5.0, cloudpickle==3.1.2, colorama==0.4.6, colorlog==6.12.0, cryptography==50.0.2, cuid==0.4, dataclasses-json==0.6.7, DataProperty==1.1.1, datasets==5.0.1, defusedxml==0.7.1, Deprecated==1.3.1, dill==0.4.1, dirtyjson==1.0.8, distro==1.9.0, doclang==0.7.3, docling==2.133.0, docling-core==2.99.0, docling-ibm-models==4.0.3, docling-parse==7.22.1, docling-slim==2.133.0, et_xmlfile==2.0.0, evaluate==0.4.6, Faker==40.40.0, fastapi==0.142.2, filelock==4.0.9, filetype==1.2.0, frozenlist==1.8.0, fsspec==2026.6.0, googleapis-common-protos==1.75.5, greenlet==3.5.6, griffe==2.3.0, griffecli==2.3.0, griffelib==2.3.0, grpcio==1.84.0, h11==0.16.0, hf-xet==1.6.0, httpcore==1.0.9, httpcore2==2.13.1, httptools==0.8.0, httpx==0.28.1, httpx-sse==0.4.3, httpx2==2.13.1, huggingface_hub==1.33.0, idna==3.20, inflection==0.5.1, itsdangerous==2.2.0, Jinja2==3.1.6, jiter==0.17.0, joblib==1.6.0, jsonpatch==1.33, jsonpointer==3.1.1, jsonref==1.1.0, jsonschema==4.26.0, jsonschema-specifications==2025.9.1, langchain==1.4.3, langchain-classic==1.0.8, langchain-community==0.4.2, langchain-core==1.6.6, langchain-ollama==1.1.0, langchain-protocol==0.0.19, langchain-text-splitters==1.1.3, langcodes==3.5.1, langgraph==1.2.12, langgraph-checkpoint==4.2.0, langgraph-prebuilt==1.1.0, langgraph-sdk==0.4.5, langsmith==0.14.4, latex2mathml==3.81.1, Lazify==0.4.0, literalai==0.1.201, llama-index==0.14.25, llama-index-core==0.14.25, llama-index-embeddings-openai==0.6.0, llama-index-instrumentation==0.6.0, llama-index-llms-openai==0.7.10, llama-index-workflows==2.25.0, llvmlite==0.50.0, lm_eval==0.4.13, lxml==6.1.3, mail-parser==4.8.0, markdown-it-py==4.2.0, marko==2.2.4, MarkupSafe==3.0.4, marshmallow==3.26.2, mbstrdecoder==1.1.5, mcp==1.30.0, mdurl==0.1.2, more-itertools==11.1.0, mpire==2.10.2, mpmath==1.3.0, multidict==6.9.1, multiprocess==0.70.19, mypy_extensions==1.1.0, narwhals==2.26.0, nest-asyncio==1.6.0, networkx==3.7, nltk==3.10.3, numba==0.68.0, numpy==2.5.3, olefile==0.47, ollama==0.6.3, omegaconf==2.3.1, openai==2.54.0, openai-whisper==20250625, opencv-python==5.0.0.93, openpyxl==3.1.5, opentelemetry-api==1.45.0, opentelemetry-exporter-http-transport==0.66b0, opentelemetry-exporter-otlp-common==0.66b0, opentelemetry-exporter-otlp-proto-common==1.45.0, opentelemetry-exporter-otlp-proto-grpc==1.45.0, opentelemetry-exporter-otlp-proto-http==1.45.0, opentelemetry-instrumentation==0.66b0, opentelemetry-instrumentation-agno==0.62.4, opentelemetry-instrumentation-alephalpha==0.62.4, opentelemetry-instrumentation-anthropic==0.62.4, opentelemetry-instrumentation-bedrock==0.62.4, opentelemetry-instrumentation-chromadb==0.62.4, opentelemetry-instrumentation-cohere==0.62.4, opentelemetry-instrumentation-crewai==0.62.4, opentelemetry-instrumentation-google-generativeai==0.62.4, opentelemetry-instrumentation-groq==0.62.4, opentelemetry-instrumentation-haystack==0.62.4, opentelemetry-instrumentation-lancedb==0.62.4, opentelemetry-instrumentation-langchain==0.62.4, opentelemetry-instrumentation-litellm==0.62.4, opentelemetry-instrumentation-llamaindex==0.62.4, opentelemetry-instrumentation-logging==0.66b0, opentelemetry-instrumentation-marqo==0.62.4, opentelemetry-instrumentation-mcp==0.62.4, opentelemetry-instrumentation-milvus==0.60.0, opentelemetry-instrumentation-mistralai==0.62.4, opentelemetry-instrumentation-ollama==0.62.4, opentelemetry-instrumentation-openai==0.62.4, opentelemetry-instrumentation-openai-agents==0.62.4, opentelemetry-instrumentation-pinecone==0.60.0, opentelemetry-instrumentation-qdrant==0.62.4, opentelemetry-instrumentation-redis==0.66b0, opentelemetry-instrumentation-replicate==0.62.4, opentelemetry-instrumentation-requests==0.66b0, opentelemetry-instrumentation-sagemaker==0.62.4, opentelemetry-instrumentation-sqlalchemy==0.66b0, opentelemetry-instrumentation-threading==0.66b0, opentelemetry-instrumentation-together==0.62.4, opentelemetry-instrumentation-transformers==0.62.4, opentelemetry-instrumentation-urllib3==0.66b0, opentelemetry-instrumentation-vertexai==0.62.4, opentelemetry-instrumentation-voyageai==0.62.4, opentelemetry-instrumentation-watsonx==0.62.4, opentelemetry-instrumentation-weaviate==0.62.4, opentelemetry-instrumentation-writer==0.62.4, opentelemetry-proto==1.45.0, opentelemetry-sdk==1.45.0, opentelemetry-semantic-conventions==0.66b0, opentelemetry-semantic-conventions-ai==0.5.1, opentelemetry-util-http==0.66b0, orjson==3.12.0, ormsgpack==1.12.2, packaging==26.3, pandas==3.0.6, pathvalidate==3.3.1, pillow==12.3.0, platformdirs==4.12.2, pluggy==1.6.0, polyfactory==3.3.0, portalocker==4.4.0, propcache==0.5.4, protobuf==7.36.2, psutil==7.2.2, psycopg2-binary==2.9.13, pyarrow==25.0.1, pyclipper==1.4.0, pycparser==3.0, pydantic==2.13.5, pydantic-settings==2.15.0, pydantic_core==2.46.5, pydeck==0.9.3, Pygments==2.21.0, PyJWT==2.15.1, pylatexenc==2.11, pypdfium2==5.13.0, pytablewriter==1.2.1, python-dateutil==2.9.0.post0, python-docx==1.2.0, python-dotenv==1.2.4, python-engineio==4.14.0, python-multipart==0.0.32, python-oxmsg==0.0.2, python-pptx==1.0.2, python-socketio==5.17.0, pytz==2026.4, pywin32==312, PyYAML==6.0.3, RapidFuzz==3.14.6, rapidocr==3.9.2, referencing==0.37.0, regex==2026.9.29, requests==2.34.2, requests-toolbelt==1.0.0, rich==15.0.0, rouge_score==0.1.2, rpds-py==2026.6.3, rtree==1.4.1, sacrebleu==2.6.0, safetensors==0.8.0, scikit-learn==1.9.1, scipy==1.18.1, semchunk==3.2.5, setuptools==84.0.0, shapely==2.1.2, shellingham==1.5.4, simple-websocket==1.1.0, six==1.17.0, sniffio==1.3.1, soupsieve==2.10, SQLAlchemy==2.1.3, sqlitedict==2.1.0, sse-starlette==3.5.0, starlette==1.7.0, streamlit==1.65.0, sympy==1.14.0, syncer==2.0.3, tabledata==1.3.5, tabulate==0.10.0, tcolorpy==0.1.7, tenacity==9.1.4, threadpoolctl==3.7.0, tiktoken==0.14.0, tinytag==2.3.2, tokenizers==0.23.2, toml==0.10.2, tomli==2.4.1, torch==2.14.1, torchvision==0.29.1, tqdm==4.70.1, traceloop-sdk==0.62.4, transformers==5.18.0, tree-sitter==0.26.0, tree-sitter-c==0.24.2, tree-sitter-javascript==0.25.0, tree-sitter-python==0.25.0, tree-sitter-typescript==0.23.2, truststore==0.10.4, typepy==1.3.5, typer==0.26.8, typing-inspect==0.9.0, typing-inspection==0.4.4, typing_extensions==4.16.0, tzdata==2026.5, urllib3==2.8.0, uuid_utils==0.17.1, uvicorn==0.54.0, watchdog==6.0.0, watchfiles==1.3.0, websockets==16.1.1, word2number==1.1, wrapt==2.5.0, wsproto==1.3.2, xlsxwriter==3.2.9, xxhash==4.0.1, yarl==1.25.1, zstandard==0.25.0
-```
-
----
-
-## 3. As Ferramentas Escolhidas para a Dai (O Core Stack Consolidado)
-
-Depois de filtrarmos e testarmos esse ecossistema gigantesco no nosso laboratório de ensaio, decidimos limpar o "ruído" e aprovar a dedo apenas as tecnologias ideais para rodar a máquina da **Dai Smart Reception Framework**. Estas são as ferramentas que superaram o ensaio por seu desempenho e alinhamento com a nossa visão de Homeostase Computacional:
-
-| Ferramenta Aprovada | Função Específica no Novo Sistema da Dai |
-| :--- | :--- |
-| **MetaGPT (Metodologia)** | A Espinha Dorsal da Equipe. Embora não seja apenas um pacote de código, é a *metodologia* que fundamenta os papéis do sistema (PM, Arquitetos, Devs, QA) liderados pelo Dr. Taylor Code. |
-| **Harness Gitness** | O Coração DevOps e CI/CD. Instalado via Docker no nosso `localhost:3000`, é a plataforma oficial que usamos para gerir o repositório de código local, criar pipelines de Integração e Deploy e fazer a orquestração tática das entregas dos Agentes desenvolvedores. |
-| **Streamlit** | O Front-End da Clínica (Recepção). Escolhido porque permite criarmos a interface visual da Dai (com quadros de Prontuário, perfis de diretoria/cliente/dev, botões, colunas e a exibição do Avatar) de forma rápida em Python, rodando perfeito em Localhost (`app_chat_st.py`). |
-| **LangGraph** | O "Sistema Nervoso" Lógico. Escolhemos em detrimento de abordagens mais soltas (como agentes autônomos puros do Langchain) porque o LangGraph constrói um "Corredor Médico" determinístico, em que a Dai tem o poder absoluto de chamar as ferramentas e mandar de volta para os especialistas (`sistema_nervoso_langgraph.py`). |
-| **Llama 3.1 (Ollama)** | O Maestro Principal (Cérebro do Dr. Taylor). Foi a LLM local escolhida como orquestradora geral, rodando 100% segura e off-grid. |
-| **DeepSeek-R1 8B (Ollama)** | O Especialista em Raciocínio Estruturado & Processos. O cérebro por trás da arquitetura lógica, diagramas BPMN/Mermaid e redação formal de POPs (Procedimentos Operacionais) e ITs (Instruções de Trabalho). |
-| **Qwen 2.5 Coder 7B (Ollama)** | O Engenheiro de Software Sênior. Modelo de ponta em programação, algoritmos complexos em Python, refatoração de alta performance e geração de testes. |
-| **Qwen / Mistral / SaulLM** | Os Especialistas do Corredor. As IAs especialistas que atuam como os "Engenheiros" ou "Consultores" (Qwen para finanças/desenvolvimento lógico, SaulLM para jurídico/compliance, Mistral para pesquisa investigativa). |
-| **PostgreSQL + pgvector** | A Memória e o Prontuário. Substituto da busca cega do Fuzzy. Escolhido porque precisamos salvar dados em tabelas relacionais (Nome, Perfil) mas com vetores matemáticos acoplados para o RAG (conectado aos embeddings do Ollama). |
-| **RapidFuzz** | A "Triagem Resolutiva Rápida". Embora o RAG assuma o peso semântico, mantivemos o RapidFuzz no sistema como uma primeira malha ultrafina e leve para buscar termos exatos de catálogo e corrigir erros de digitação de forma praticamente instantânea, *antes* de acordar os pesados agentes LLMs. |
-
----
-**Documento gerado em:** Outubro de 2026.
-**Por:** Dr. Taylor Code
-**Para:** Projeto Dai Smart Reception Framework
+### Marco 4: Evolução Temporal da Dívida e Séries Históricas (2021 a 2024)
+- Motor de consolidação multi-exercício com cálculo de CAGR;
+- Geração de gráficos vetoriais interativos no Lobby e no Chat da DAI.
