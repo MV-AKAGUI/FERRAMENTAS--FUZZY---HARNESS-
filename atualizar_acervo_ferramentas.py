@@ -183,6 +183,19 @@ O comando irá:
 | **Motor de Evolução Temporal da Dívida** | **Cálculo de Séries Históricas:** Consolidação contábil multi-exercício (2021 a 2024), cálculo de CAGR, picos e gerador de gráficos vetoriais SVG. | `ferramentas/evolucao_temporal_divida.py` |
 
 ---
+
+## 10. 🔓 Desbloqueador de Arquivos & Extração Segura (HDW - Hudson Data Warehouse)
+*Módulos de ingestão de arquivos protegidos, travados para edição ou compactados.*
+
+| Ferramenta / Módulo | Motores e Bibliotecas | Função Operacional no HDW |
+| :--- | :--- | :--- |
+| **DesbloqueadorPDF** | `pikepdf`, `pypdfium2`, `pdfplumber` | Quebra de restrições de cópia/impressão, descriptografia com senha e extração de texto/tabelas para os agentes. |
+| **DesbloqueadorWord** | `python-docx`, XML Stripping | Remoção de proteção de edição restrita (`<w:documentProtection>`) sem necessidade de senha externa. |
+| **DesbloqueadorExcel** | `openpyxl`, XML Stripping | Remoção de proteção de planilhas e pastas de trabalho (`<sheetProtection>`, `<workbookProtection>`) sem corromper fórmulas. |
+| **DesbloqueadorRARZIP** | `rarfile`, `py7zr`, `zipfile`, WinRAR | Descompactação e extração de lotes compactados `.rar` (via UnRAR do WinRAR), `.7z` (via py7zr) e `.zip`. |
+| **HudsonDesbloqueador** | `ferramentas/hudson_desbloqueador.py` | Fachada unificada que detecta a extensão e despacha automaticamente para o desbloqueador correspondente. |
+
+---
 *Documento gerado e gerenciado automaticamente pelo ecossistema DAISUGI TECNOLOGIAS.*
 """
     return md
