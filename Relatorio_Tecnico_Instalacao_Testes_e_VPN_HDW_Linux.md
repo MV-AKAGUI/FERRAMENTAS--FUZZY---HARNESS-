@@ -1,9 +1,11 @@
 # RELATÓRIO TÉCNICO DE INSTALAÇÃO, TESTES E ARQUITETURA DE REDE (VPN)
+
 ## HUDSON DATA WAREHOUSE (HDW) - AMBIENTE LINUX SUGOI
 
 **Data do Relatório:** 08/10/2026  
 **Responsável Técnico:** Equipe de Arquitetura & Automação HDW / PMO de TI  
 **Destinatários:**  
+
 1. Equipe de TI da SUGOI Construtora S.A.  
 2. Agente Especialista Claude  
 3. Dr. Taylor Code & Ronaldo Akagui  
@@ -17,7 +19,8 @@
 
 Em conformidade com as diretrizes do Dr. Taylor Code, do agente Claude e do comitê de tecnologia da SUGOI, foi realizada a implantação, configuração e bateria integral de testes de todas as ferramentas complementares forenses, extratores e motores de inteligência artificial no ambiente do **Hudson Data Warehouse (HDW)**.
 
-### Resultados Consolidados:
+### Resultados Consolidados
+
 - **Infraestrutura Pré-Existente:** Preservada em **100%**, com zero indisponibilidade (zero downtime). O banco de dados PostgreSQL 18.6, suas 9 tabelas do schema `hudson`, seu particionamento de custódia e seus volumes de armazenamento permaneceram totalmente operacionais e íntegros.
 - **Isolamento do Hudson DC (HDC):** Nenhuma alteração foi realizada em relação ao HDC, respeitando o fato de que este roda de forma segregada no Oracle Cloud (OCI).
 - **Novas Ferramentas Forenses e IA:** Instaladas, verificadas e homologadas com sucesso (Docling, RapidOCR, RapidFuzz, Desbloqueador de PDF/Word/Excel/RAR/ZIP, LibreOffice CLI, UnRAR nativo e Libmagic).
@@ -28,12 +31,15 @@ Em conformidade com as diretrizes do Dr. Taylor Code, do agente Claude e do comi
 ## 2. ARQUITETURA DE SEGURANÇA E CONECTIVIDADE VIA OPENVPN (O VPN)
 
 ### 2.1. Cenário de Isolamento do Servidor Linux
+
 O servidor físico/VM que hospeda o HDW no IP `192.168.1.122` é uma máquina **isolada na rede interna da SUGOI**. Por razões de cibersegurança, compliance e proteção de dados sigilosos e fiscais da construtora, **o servidor não possui portas expostas diretamente para a Internet pública**.
 
 ### 2.2. O Canal de Acesso Seguro: OpenVPN
+
 Qualquer sistema, estação de trabalho remota ou robô de inteligência artificial externo (por exemplo: **Dai**, **Kan-sa**, robôs em nuvem ou o **HDC na Oracle Cloud**) que necessite consumir a API do HDW (`http://192.168.1.122:8000`) ou conectar-se diretamente ao PostgreSQL (`192.168.1.122:5432`) **deve obrigatoriamente trafegar pelo túnel seguro OpenVPN**.
 
 ### 2.3. Especificações Técnicas do Perfil / Cartão de Acesso OpenVPN
+
 Conforme analisado nos arquivos de configuração disponibilizados pela TI da SUGOI (`C:\Users\Ronaldo Akagui.SUG00245\OneDrive - SUGOI CONSTRUTORA S.A\Documentos\VPN\hudson_vpn.ovpn`):
 
 | Parâmetro Técnico | Especificação Homologada |
@@ -46,6 +52,7 @@ Conforme analisado nos arquivos de configuração disponibilizados pela TI da SU
 | **Perfis Existentes** | `hudson_vpn.ovpn` (perfil da aplicação) e `root_vpn.ovpn` (perfil administrativo) |
 
 ### 2.4. Como Aplicações Externas (Dai, Kan-sa, HDC na Nuvem) Devem Acessar o HDW
+
 1. **Emissão do Cartão de Acesso:** A TI da SUGOI gera um arquivo de credencial `.ovpn` dedicado para o serviço cliente.
 2. **Execução do Túnel:**
    - **Em Servidores Linux / Containers (Ex: Oracle Cloud):** O OpenVPN pode rodar como um serviço de sistema (`systemctl start openvpn-client@hudson`) ou como um container sidecar com permissões de rede `NET_ADMIN`.
@@ -61,14 +68,17 @@ Conforme analisado nos arquivos de configuração disponibilizados pela TI da SU
 Realizamos testes automatizados via SSH e execução interna no Docker em 08/10/2026. Abaixo estão os resultados obtidos:
 
 ### 3.1. Estado dos Containers Docker
+
 ```text
 NAMES            STATUS                  PORTS
 hudson-app       Up 46 hours             0.0.0.0:8000->8000/tcp, :::8000->8000/tcp
 sugoi-postgres   Up 47 hours (healthy)   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp
 ```
+
 - Ambos os serviços operando continuamente sem falhas e com status *healthy*.
 
 ### 3.2. Integridade do Banco de Dados PostgreSQL (sugoi-postgres)
+
 - **Instância:** PostgreSQL 18.6
 - **Database:** `sugoi` (Encoding UTF8, Locale pt_BR.UTF-8)
 - **Schema:** `hudson`
@@ -86,6 +96,7 @@ sugoi-postgres   Up 47 hours (healthy)   0.0.0.0:5432->5432/tcp, :::5432->5432/t
 - **Volume Físico:** Volume Docker `sugoi-postgres-data` intacto.
 
 ### 3.3. Teste da API FastAPI HDW
+
 ```http
 GET http://localhost:8000/health
 HTTP/1.1 200 OK
