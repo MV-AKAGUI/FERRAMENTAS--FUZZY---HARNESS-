@@ -88,15 +88,20 @@ O Dr. Taylor não é apenas um executor avulso; ele é o **agente de homeostase*
 
 ---
 
-## 4. O Papel do Claude Code: Auditoria Cruzada e Aferição
+## 4. O Papel da Auditoria Cruzada: Claude Code & Failover para Especialista Local
 
-Para eliminar o risco de "auto-validação tendenciosa", estabelece-se o fluxo de **Auditoria Externa pelo Claude Code**:
-1. **Pré-Auditoria (Estrutura):** Antes de intervenções estruturais pesadas, o Claude Code analisa o mapa de diretórios, dependências e padrões arquiteturais propostos pelo Dr. Taylor.
-2. **Execução:** O Dr. Taylor implementa e garante a homeostase do código.
-3. **Pós-Auditoria (Funcionalidade e Blindagem):**
-   * O Claude Code avalia os arquivos alterados.
+Para eliminar o risco de "auto-validação tendenciosa", estabelece-se o fluxo de **Auditoria Externa**:
+1. **Auditor Primário (Claude Code):** Quando houver tokens e conectividade de nuvem disponíveis, o Claude Code atua na inspeção profunda de estrutura, segurança e conformidade.
+2. **Failover Automático (Especialista em Sistemas / Agente Local Offline):**
+   * **Gatilho de Transição:** Caso os tokens da API Claude expirem, atinjam o rate-limit ou o ambiente fique sem conexão externa.
+   * **Auditor Local Substitutivo:** O ecossistema aciona instantaneamente o motor local via **Ollama (`deepseek-r1:8b` para raciocínio lógico/auditoria ou `qwen2.5-coder:7b` para inspeção sintática)**.
+   * **Critério de Inspeção:** O auditor local aplica o mesmo checklist rígido: (a) ausência de imports quebrados, (b) zero vazamento de credenciais, (c) conformidade com as Karpathy Guidelines e (d) presença de testes funcionais executáveis.
+3. **Pré-Auditoria (Estrutura):** Analisa árvore de diretórios, dependências e padrões arquiteturais antes de grandes intervenções.
+4. **Execução:** O Dr. Taylor implementa e garante a homeostase do código.
+5. **Pós-Auditoria (Funcionalidade e Blindagem):**
+   * O auditor ativo (Claude Code ou Especialista Local DeepSeek/Qwen) avalia os arquivos alterados.
    * Verifica se há riscos de alucinação, código morto, imports desnecessários ou vazamento de dados.
-   * Emite o selo de validação para o PMO.
+   * Emite o parecer formal de validação para o PMO antes da aprovação do Arquiteto.
 
 ---
 
