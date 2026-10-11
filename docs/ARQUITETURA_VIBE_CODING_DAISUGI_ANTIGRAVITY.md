@@ -46,11 +46,22 @@
                                                      |
                                                      v
 +---------------------------------------------------------------------------------------------------------+
-|                                    CAMADA DE MCP SERVERS (INTEGRAÇÃO)                                   |
+|                                    CAMADA DE MCP SERVERS & HARNESS                                      |
 +--------------------------+------------------------------+-----------------------------+-----------------+
-|     mcp-metagpt-engine   |       mcp-docling-parser     |      mcp-rapidfuzz-search   |  mcp-git-harness|
-|  (Software Company Multi)|     (Extração PDF/Tabelas)   |   (Saneamento Fonético/CNPJ)|  (Auto-Sync GH) |
+|     mcp-metagpt-engine   |       mcp-docling-parser     |      mcp-rapidfuzz-search   | GITNESS / HARNESS|
+|  (Software Company Multi)|     (Extração PDF/Tabelas)   |   (Saneamento Fonético/CNPJ)| (Orquestrador & |
+|                          |                              |                             |  CI/CD Pipelines|
 +--------------------------+------------------------------+-----------------------------+-----------------+
+                                                     |
+                                                     v
++---------------------------------------------------------------------------------------------------------+
+|                                  ESTEIRA RAG (RETRIEVAL-AUGMENTED GENERATION)                           |
++---------------------------------------------------------------------------------------------------------+
+| • Ingestão & Chunking: Docling Parser (preservação de tabelas e metadados)                              |
+| • Persistência Vetorial: PostgreSQL + pgvector (HDW) / ChromaDB Local                                    |
+| • Busca Híbrida: Busca Semântica (Embeddings) + RapidFuzz (Correspondência Exata / Fonética)            |
+| • Grounding Estrito: Respostas ancoradas com citação obrigatória (Anti-Alucinação Nível Zero)           |
++---------------------------------------------------------------------------------------------------------+
                                                      |
                                                      v
 +---------------------------------------------------------------------------------------------------------+
