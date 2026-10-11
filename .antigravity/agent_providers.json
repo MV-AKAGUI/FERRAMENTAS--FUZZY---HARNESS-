@@ -1,0 +1,38 @@
+{
+  "chat.models": [
+    {
+      "id": "ide_standard",
+      "name": "1. IDE Standard (Gemini Native)",
+      "type": "native",
+      "description": "Modelos nativos do Antigravity IDE para artefatos e debug visual."
+    },
+    {
+      "id": "claude_code_private",
+      "name": "2. Claude Code (Minha Conta Privada)",
+      "type": "external_cli",
+      "command": "claude -p",
+      "env": {
+        "ANTHROPIC_API_KEY": "${env:ANTHROPIC_API_KEY}"
+      },
+      "description": "Execução via Claude CLI local consumindo cota privada da Anthropic."
+    },
+    {
+      "id": "local_llama3",
+      "name": "3. Llama 3 (Desktop Local - Ollama)",
+      "type": "openai_compatible",
+      "baseUrl": "http://localhost:11434/v1",
+      "modelName": "llama3",
+      "apiKey": "ollama",
+      "description": "Execução 100% offline e gratuita rodando na GPU local."
+    },
+    {
+      "id": "local_deepseek",
+      "name": "4. DeepSeek R1 / Local (Ollama)",
+      "type": "openai_compatible",
+      "baseUrl": "http://localhost:11434/v1",
+      "modelName": "deepseek-r1",
+      "apiKey": "ollama",
+      "description": "Raciocínio lógico e refatoração offline no desktop."
+    }
+  ]
+}
