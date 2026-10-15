@@ -1,0 +1,41 @@
+{
+  "models": {
+    "default": "claude-opus-5-5",
+    "fallback": "ollama-deepseek-r1"
+  },
+  "mcpServers": {
+    "meta-gpt-daisugi": {
+      "command": "python",
+      "args": [".agents/mcp/meta-gpt-server.py"],
+      "disabled": false,
+      "env": {
+        "META_GPT_WORKSPACE": ".venv/meta_gpt",
+        "META_GPT_MODE": "headless",
+        "PYTHONPATH": ".venv/lib/python3.11/site-packages"
+      }
+    },
+    "ollama-local": {
+      "command": "curl",
+      "disabled": false,
+      "env": {
+        "OLLAMA_BASE_URL": "http://127.0.0.1:11434"
+      }
+    }
+  },
+  "permissions": {
+    "allowedTools": [
+      "bash",
+      "powershell",
+      "read",
+      "write",
+      "edit",
+      "glob",
+      "grep"
+    ]
+  },
+  "environment": {
+    "DAISUGI_ENV": "production",
+    "OLLAMA_HOST": "127.0.0.1:11434",
+    "META_GPT_API_KEY": "${env:META_GPT_API_KEY}"
+  }
+}
