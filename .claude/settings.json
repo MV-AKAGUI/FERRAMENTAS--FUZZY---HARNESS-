@@ -33,9 +33,56 @@
       "grep"
     ]
   },
+  "agents": {
+    "dai-vibe-code": {
+      "description": "Arquiteto-Chefe: Design-first, anti-alucinação, RACI governance",
+      "model": "claude-opus-5-5",
+      "fallback_model": "ollama-deepseek-r1",
+      "fallback_threshold_quota": 0.2,
+      "features": {
+        "guardrails": true,
+        "anti_hallucination": true,
+        "grill_me_protocol": true,
+        "fuzzy_confidence_scoring": true,
+        "harness_integration": true
+      },
+      "skills": [
+        ".claude/skills/dai-vibe-code/skill.md",
+        ".claude/skills/dai-vibe-code/guardrails.md",
+        ".claude/skills/dai-vibe-code/grill-me-protocol.md",
+        ".claude/skills/dai-vibe-code/tech-stack-matrix.json"
+      ]
+    }
+  },
+  "antigravity_integration": {
+    "pmo_orchestrator": {
+      "enabled": true,
+      "protocol": "Harness RACI + Fuzzy Gates",
+      "gates": {
+        "free": [
+          "specs_sdd",
+          "diagrams_c4",
+          "schemas_pydantic",
+          "tests_local",
+          "grill_me_socrático"
+        ],
+        "blocked": [
+          "postgresql_schema",
+          "docker_new_port",
+          "commit_main",
+          "deploy_prod"
+        ]
+      }
+    },
+    "webhook_url": "${env:ANTIGRAVITY_WEBHOOK_URL}",
+    "api_key": "${env:ANTIGRAVITY_API_KEY}"
+  },
+
   "environment": {
     "DAISUGI_ENV": "production",
     "OLLAMA_HOST": "127.0.0.1:11434",
-    "META_GPT_API_KEY": "${env:META_GPT_API_KEY}"
+    "META_GPT_API_KEY": "${env:META_GPT_API_KEY}",
+    "ANTIGRAVITY_WEBHOOK_URL": "${env:ANTIGRAVITY_WEBHOOK_URL}",
+    "ANTIGRAVITY_API_KEY": "${env:ANTIGRAVITY_API_KEY}"
   }
 }
