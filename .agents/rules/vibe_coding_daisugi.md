@@ -1,4 +1,4 @@
-﻿# 🏛️ VIBE CODING DAISUGI — PROTOCOLO DE GOVERNANÇA PERMANENTE
+# 🏛️ VIBE CODING DAISUGI — PROTOCOLO DE GOVERNANÇA PERMANENTE
 
 ## Trigger
 always_on
@@ -38,7 +38,11 @@ Aplica obrigatoriamente as diretrizes da Arquitetura de Vibe Coding Daisugi e a 
 - O Antigravity IDE atua como o Maestro Estratégico de Vibe Coding.
 - Tarefas pesadas de inferência, PRDs do MetaGPT e auditorias periódicas devem priorizar o acervo de LLMs locais do desktop via Ollama (`http://127.0.0.1:11434`), garantindo **custo zero de tokens de nuvem/IDE** e autonomia offline.
 
-### 6. Disciplina Karpathy (Surgical Patch, Verify and Stop)
+### 6. Spec-Driven Development (SDD) & Cabresto Estrutural Obrigatório
+- **Trava de Bloqueio de Código:** É expressamente proibido gerar código sem antes validar as etapas de: (1) Constituição de regras, (2) Especificação em português de negócio, (3) Anatomia técnica C4 (UI, API, Servidores HDW, Banco PostgreSQL) e (4) Entrevista/Alinhamento de dúvidas (`/grill-me`).
+- **Convocação Obrigatória de Ferramentas:** Toda arquitetura deve prever o papel do **Meta_GPT** (PRDs/Arquitetura), **Docling** (ingestão RAG sem perda de tabelas), **RapidFuzz** (sanitização fonética), **Instructor + Pydantic** (cabresto anti-alucinação de esquemas), **Diagrams** (geração visual de topologia) e **Shadcn/UI** (Vibe Design moderno).
+
+### 7. Disciplina Karpathy (Surgical Patch, Verify and Stop)
 - Intervenções de código devem ser cirúrgicas, na menor camada responsável, preservando código e comentários pré-existentes.
 - Toda entrega requer prova executável de não-regressão antes de ser declarada concluída.
 - Aplicação estrita da regra global de sincronização contínua com o GitHub (`git status` ──► `git pull` ──► `git add` ──► `git commit` ──► `git push origin main`).
