@@ -306,7 +306,8 @@ Se algo falhar:
 ✅ **semana3-checklist-pre-monday.sh** - Validações (domingo)  
 ✅ **testes-iniciais-semana3.test.ts** - Testes skeleton (segunda+)  
 ✅ **troubleshooting-semana3.md** - Soluções rápidas (sempre)  
-✅ **README_EXECUCAO_ANTECIPADA.md** - Este guia (referência)
+✅ **README_EXECUCAO_ANTECIPADA.md** - Este guia (referência)  
+✅ **PASSO_8_REST_API_SDD.md** — 10 endpoints especificados, 7.5k linhas
 
 **Timeline:** 
 - Domingo: 5 min checklist
@@ -320,3 +321,4 @@ Se algo falhar:
 **Assinado:** Dai_Vibe_Code  
 **Data:** 2026-10-16 16:15 Brasília  
 **Próximo passo:** Execute `semana3-checklist-pre-monday.sh` domingo à noite
+
