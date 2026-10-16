@@ -1,0 +1,221 @@
+{
+  "meta": {
+    "version": "2.0",
+    "description": "Tech Stack Matrix - Seleção de ferramentas por caso de uso, fase e restrição",
+    "author": "Dai_Vibe_Code",
+    "last_updated": "2026-10-15"
+  },
+  "phases": {
+    "discovery": {
+      "name": "Discovery & Requirements",
+      "duration": "2-3 dias",
+      "tools": [
+        {
+          "tool": "Meta_GPT",
+          "purpose": "Auto-gerar SDD, C4, requirements",
+          "activation": "Pós-Grill-Me com confiança >= 70%",
+          "output": ["sdd.md", "c4.svg", "specs.json"],
+          "cost": "Ollama local (free)",
+          "anti_hallucination": "Instructor validation"
+        },
+        {
+          "tool": "LangChain Graph",
+          "purpose": "Mapear dependências e fluxos",
+          "activation": "Se arquitetura complexa",
+          "output": ["dependency_graph.json", "flow_diagram.svg"],
+          "cost": "Free (open-source)",
+          "anti_hallucination": "Structured prompts"
+        },
+        {
+          "tool": "Instructor + Pydantic",
+          "purpose": "Validar schemas propostos",
+          "activation": "Design de schemas",
+          "output": ["models.py", "validation_report.txt"],
+          "cost": "Free",
+          "anti_hallucination": "Type validation"
+        }
+      ]
+    },
+    "validation": {
+      "name": "Validation & Grill-Me",
+      "duration": "3-5 dias",
+      "tools": [
+        {
+          "tool": "Ollama (DeepSeek R1)",
+          "purpose": "Reasoning chain offline para Grill-Me",
+          "activation": "Sempre (fallback se quota cloud < 20%)",
+          "output": ["grill_me_report.md", "confidence_matrix.json"],
+          "cost": "Free (local)",
+          "anti_hallucination": "Temperature=0.2 (determinístico)"
+        },
+        {
+          "tool": "Gitleaks",
+          "purpose": "Scan de secrets, compliance, security",
+          "activation": "Pré-qualquer commit",
+          "output": ["gitleaks_report.json"],
+          "cost": "Free",
+          "anti_hallucination": "Automático"
+        },
+        {
+          "tool": "Pytest",
+          "purpose": "Testar premissas de performance/lógica",
+          "activation": "Após seleção de tech stack crítico",
+          "output": ["test_report.txt", "performance_metrics.json"],
+          "cost": "Free",
+          "anti_hallucination": "Testes comprovam (ou refutam) suposições"
+        }
+      ]
+    },
+    "execution": {
+      "name": "Execution & Orchestration",
+      "duration": "Variável",
+      "tools": [
+        {
+          "tool": "n8n",
+          "purpose": "Orquestração de workflows complexos, integrações",
+          "use_case": "Processos com múltiplas APIs, retry logic, condicional",
+          "activation": "Se workflow >= 3 steps com condicional",
+          "cost": "Self-hosted (free) ou cloud ($199+/mês)",
+          "docs": "https://n8n.io",
+          "anti_hallucination": "Visual workflow = explícito (não alucinante)"
+        },
+        {
+          "tool": "Dify",
+          "purpose": "No-code interface para testes, prototipos",
+          "use_case": "Chat bots, simple pipelines, MVP testing",
+          "activation": "Se precisa interface rápida para stakeholders",
+          "cost": "Self-hosted (free) ou cloud ($499/mês)",
+          "docs": "https://dify.ai",
+          "anti_hallucination": "Testes visuais antes de código"
+        },
+        {
+          "tool": "FastAPI",
+          "purpose": "Backend APIs com validação Pydantic",
+          "use_case": "REST/GraphQL APIs, microsserviços",
+          "activation": "Padrão para backend",
+          "cost": "Free",
+          "docs": "https://fastapi.tiangolo.com",
+          "anti_hallucination": "Pydantic enforce schema"
+        },
+        {
+          "tool": "PostgreSQL",
+          "purpose": "Relational DB com JSONB, escalabilidade",
+          "use_case": "Dados estruturados + semi-estruturados",
+          "activation": "Padrão, bloqueado até "De Acordo"",
+          "cost": "Free (self-hosted) ou $15+/mês (managed)",
+          "docs": "https://postgresql.org",
+          "anti_hallucination": "Migrations + backup validation"
+        },
+        {
+          "tool": "Redis",
+          "purpose": "Cache, session store, rate limiting",
+          "use_case": "Alta performance, distributed cache",
+          "activation": "Se QPS > 1k ou latência crítica",
+          "cost": "Free (self-hosted) ou $5+/mês (managed)",
+          "docs": "https://redis.io",
+          "anti_hallucination": "Cache invalidation strategy"
+        }
+      ]
+    },
+    "deployment": {
+      "name": "Deployment & Monitoring",
+      "duration": "Variável",
+      "tools": [
+        {
+          "tool": "Docker",
+          "purpose": "Containerização, reproducibilidade",
+          "activation": "Padrão para prod, bloqueado até "De Acordo"",
+          "cost": "Free",
+          "docs": "https://docker.com",
+          "anti_hallucination": "Determínico (mesma img sempre)"
+        },
+        {
+          "tool": "GitHub Actions",
+          "purpose": "CI/CD, automated testing, gated deployment",
+          "activation": "Padrão para main/prod",
+          "cost": "Free (2k min/mês)",
+          "docs": "https://github.com/features/actions",
+          "anti_hallucination": "Tests + Gitleaks gate"
+        },
+        {
+          "tool": "Prometheus + Grafana",
+          "purpose": "Observability, alertas, dashboards",
+          "activation": "Padrão para prod",
+          "cost": "Free (self-hosted)",
+          "docs": "https://prometheus.io",
+          "anti_hallucination": "Métricas concretas"
+        }
+      ]
+    }
+  },
+  "by_constraint": {
+    "high_volume": {
+      "description": "Alta escala: 10k+ QPS, 100k+ usuários",
+      "stack": [
+        "PostgreSQL + sharding",
+        "Redis + distributed cache",
+        "Kafka (event streaming)",
+        "Elasticsearch (search)",
+        "Nginx (load balancing)"
+      ],
+      "docs_url": "tech-stack-matrix.json#high_volume"
+    },
+    "high_security": {
+      "description": "Dados sensíveis: LGPD, GDPR, PCI-DSS",
+      "stack": [
+        "PostgreSQL (AES-256 encryption)",
+        "HashiCorp Vault (secrets)",
+        "WAF + rate limiting",
+        "OAuth2 + mTLS",
+        "Audit logging (all access)"
+      ],
+      "docs_url": "tech-stack-matrix.json#high_security"
+    },
+    "real_time": {
+      "description": "Real-time: WebSockets, streaming, < 100ms latency",
+      "stack": [
+        "Redis (pub/sub)",
+        "Kafka (streaming)",
+        "GraphQL subscriptions",
+        "WebSocket server (FastAPI + asyncio)"
+      ],
+      "docs_url": "tech-stack-matrix.json#real_time"
+    },
+    "low_budget": {
+      "description": "Barato: < $5k/mês",
+      "stack": [
+        "PostgreSQL (free self-hosted)",
+        "FastAPI (free)",
+        "GitHub Actions (free tier)",
+        "Vercel/Railway (cheap hosting)",
+        "Ollama (free local LLM)"
+      ],
+      "docs_url": "tech-stack-matrix.json#low_budget"
+    },
+    "offline_first": {
+      "description": "Sem internet: local-first, sync quando conecta",
+      "stack": [
+        "SQLite (local DB)",
+        "Ollama (local LLM)",
+        "Service Workers (offline UI)",
+        "P2P sync (Automerge, Yjs)"
+      ],
+      "docs_url": "tech-stack-matrix.json#offline_first"
+    }
+  },
+  "decision_flow": {
+    "step_1": "Qual é o volume esperado?",
+    "options": {
+      "high": "→ Veja 'high_volume'",
+      "low": "→ Veja 'low_budget'",
+      "unknown": "→ Grill-Me pergunta #3 (Escalabilidade)"
+    }
+  },
+  "antihalucination_checks": [
+    "Toda ferramenta deve ter URL de docs citada",
+    "Trade-offs devem ser explícitos (not 'perfect')",
+    "Cost deve ser realístico, não 'estimated'",
+    "Se confiança < 80%, marca como 'research needed'",
+    "Precendente no acervo? Cita versão + commit"
+  ]
+}
