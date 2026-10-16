@@ -218,7 +218,7 @@ model AnalisadorDocumento {
 model ProcessoEmbedding {
   id              Int    @id @default(autoincrement())
   processo_id     Int
-  embedding       Vector(1536) // OpenAI embedding dimension
+  embedding       Unsupported("vector(1536)")? // OpenAI embedding dimension
   conteudo        String
   timestamp       DateTime @default(now())
 
