@@ -1,0 +1,130 @@
+{
+  "project_name": "FERRAMENTAS-FUZZY-HARNESS",
+  "created_date": "2026-10-16",
+  "official_drive_url": "https://drive.google.com/drive/folders/1Tn-SbCNrvscjIkguAd-Nl5u4lJQpjOyE",
+
+  "folder_structure": {
+    "main": {
+      "name": "FERRAMENTAS-FUZZY-HARNESS",
+      "id": "1Tn-SbCNrvscjIkguAd-Nl5u4lJQpjOyE",
+      "url": "https://drive.google.com/drive/folders/1Tn-SbCNrvscjIkguAd-Nl5u4lJQpjOyE",
+      "description": "Official central repository for all project documentation"
+    },
+
+    "primary_folders": {
+      "sdd": {
+        "name": "SDD",
+        "id": "1kUfs38Cl7RVu3Cx0DvYmrPPMVUe3hm0t",
+        "url": "https://drive.google.com/drive/folders/1kUfs38Cl7RVu3Cx0DvYmrPPMVUe3hm0t",
+        "purpose": "Sistema Detalhado por Disciplinas (project specifications)",
+        "local_sync_from": "./docs/sdd",
+        "readme": "1crbg2--0kbgKnf3nI1YedjWYbTZdk8th7x07aCk8-PY"
+      },
+      "specs": {
+        "name": "Specs",
+        "id": "1CTLRbjLobtlVJD5atSG2IX1WN73fRV2h",
+        "url": "https://drive.google.com/drive/folders/1CTLRbjLobtlVJD5atSG2IX1WN73fRV2h",
+        "purpose": "Technical specifications (APIs, schemas, integrations)",
+        "local_sync_from": "./docs/specs",
+        "readme": "1JgcaR8FWptKo_pEnbuxHJI44uMmUBgEZSH62uxfQNao"
+      },
+      "designs": {
+        "name": "Designs",
+        "id": "1k-7PDmmz9OBzYKOjJL-mQugSusVzFKAJ",
+        "url": "https://drive.google.com/drive/folders/1k-7PDmmz9OBzYKOjJL-mQugSusVzFKAJ",
+        "purpose": "C4 diagrams, architecture, wireframes",
+        "local_sync_from": "./docs/designs",
+        "readme": "1aHBPJRNRUOS7hzYWuowHAWTTMlXWK06ePt94oHFVSzs",
+        "subfolders": {
+          "c4_diagrams": {
+            "name": "C4_Diagrams",
+            "id": "1hv6WI5PqdDRd0htBJf32jdrJJDDwWPi9"
+          },
+          "architecture": {
+            "name": "Architecture",
+            "id": "1hsofFPezXUDy9Y5PfvgpdtE0Qw-HKyBv"
+          },
+          "wireframes": {
+            "name": "Wireframes",
+            "id": "1SgbBo_yyTxc2-NGxp1Wbvj2rrmUj-1S9"
+          }
+        }
+      },
+      "reports": {
+        "name": "Reports",
+        "id": "1I-mAcaEtxVes_ogzKiZYXfhmTeD9u3s2",
+        "url": "https://drive.google.com/drive/folders/1I-mAcaEtxVes_ogzKiZYXfhmTeD9u3s2",
+        "purpose": "Audit trails, project status, compliance reports",
+        "local_sync_from": "./docs/reports",
+        "readme": "1uZkW3TGrp_NuyQ-vLScYrkrAB6L6SA7DDPHI25MfzQk",
+        "subfolders": {
+          "audit_trails": {
+            "name": "Audit_Trails",
+            "id": "19FoFTQdw6Lhbx3Mzst4r4UpMMB7P-ccx"
+          },
+          "project_status": {
+            "name": "Project_Status",
+            "id": "1nB7FvRnu1cn9u0pAojCwsYpngmcBdBhi"
+          },
+          "compliance": {
+            "name": "Compliance",
+            "id": "1LDbOK4XHre5Mb8YBEh5z4Mv9_FU1kEOX"
+          }
+        }
+      },
+      "executables": {
+        "name": "Executables",
+        "id": "1vsgdJLyLhmlFSH-rFe6JuPWZ1CV6I0xW",
+        "url": "https://drive.google.com/drive/folders/1vsgdJLyLhmlFSH-rFe6JuPWZ1CV6I0xW",
+        "purpose": "Presentations, handbooks, templates",
+        "local_sync_from": "./docs/executables",
+        "readme": "1hrrAReoNRRzIoFpri_OA2S4Z3gjds9qXy_TP7lAb8ng",
+        "subfolders": {
+          "presentations": {
+            "name": "Presentations",
+            "id": "106EjmH5wRGTI-m57iXkFq5Lp_6mzkNpn"
+          },
+          "handbooks": {
+            "name": "Handbooks",
+            "id": "1Q1EmoigifUtpGwe1ogPIy0kbNdbwb4LA"
+          },
+          "templates": {
+            "name": "Templates",
+            "id": "1kxxBzxLFp-PRq9FX80nw-r8GEXVsKqxK"
+          }
+        }
+      },
+      "archive": {
+        "name": "Archive",
+        "id": "1oFmR5ykMs2sv6A1VjTenda80x3y3iBm2",
+        "url": "https://drive.google.com/drive/folders/1oFmR5ykMs2sv6A1VjTenda80x3y3iBm2",
+        "purpose": "Historical and deprecated documents",
+        "local_sync_from": "./docs/archive",
+        "readme": "1HEB4Y-cNOWMuhcwHf5NSqFmn5BudYJpAi-PzJP744yQ"
+      }
+    }
+  },
+
+  "sync_configuration": {
+    "enabled": true,
+    "direction": "bidirectional",
+    "auto_sync_on_commit": true,
+    "sync_interval_minutes": 60,
+    "ignore_patterns": [
+      ".git",
+      ".env",
+      "node_modules",
+      "__pycache__",
+      ".DS_Store",
+      "*.pyc",
+      ".venv"
+    ]
+  },
+
+  "access_notes": {
+    "owner": "ronaldoakagui@gmail.com",
+    "sharing": "Shared with Antigravity team for documentation access",
+    "last_updated": "2026-10-16T00:13:07Z",
+    "next_action": "Configure sync script with GOOGLE_DRIVE_FOLDER_ID environment variable"
+  }
+}
