@@ -239,23 +239,23 @@ class ValidacaoBPMResponse(BaseModel):
 
 ---
 
-## 🎯 14 SETORES (IMUTÁVEL)
+## 🎯 14 SETORES (IMUTÁVEL - ORDEM PAM SUGOI)
 
 ```
 01 - Presidência
-02 - Gestão & Governança (G&G)
-03 - Qualidade, Saúde, Meio Ambiente e Segurança (QSMS)
-04 - Operações
-05 - Customer Relationship Management (CRM)
-06 - Administração & Financeiro
-07 - Planejamento Financeiro
-08 - Controladoria
-09 - Suprimentos
-10 - Jurídico Empresa
-11 - Jurídico Imóvel
-12 - Land Bank
-13 - Incorporação
-14 - Engenharia
+02 - Gente, cultura e gestão
+03 - Operações
+04 - Planejamento financeiro
+05 - Controladoria
+06 - Administrativo financeiro
+07 - Jurídico empresarial
+08 - QSMS (Qualidade, Saúde, Meio Ambiente e Segurança)
+09 - Land bank e novos negócios
+10 - Jurídico imobiliário
+11 - Incorporação
+12 - Engenharia
+13 - Suprimentos
+14 - CRM (Customer Relationship Management)
 ```
 
 ---
