@@ -1,0 +1,187 @@
+version: '3.9'
+
+# ═══════════════════════════════════════════════════════════════════════════
+# DOCKER COMPOSE: SUGOI_CADEIA_DE_VALOR no Oracle (OCI)
+# ═══════════════════════════════════════════════════════════════════════════
+# Serviços:
+#   - sugoi-api (Node.js Fastify/Express)
+#   - sugoi-ollama (LLM local, 7 modelos)
+#
+# Volumes compartilhados com Kigyou:
+#   - PostgreSQL (schema sugoi_*, reutiliza dao_postgres_vector)
+#   - Object Storage (S3-compatible, OCI)
+#
+# Networks:
+#   - daisugi-network (compartilhada com Kigyou)
+# ═══════════════════════════════════════════════════════════════════════════
+
+services:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # SUGOI API (Node.js)
+  # ─────────────────────────────────────────────────────────────────────────
+  sugoi-api:
+    image: sugoi-cadeia-valor:latest
+    container_name: sugoi-api
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      # Aplicação
+      NODE_ENV: "production"
+      PORT: "3001"
+
+      # Database (PostgreSQL Oracle - COMPARTILHADO)
+      DATABASE_URL: "postgresql://admin:masterkey123_daisugi_segura@postgres:5432/memoria_vetorial?schema=sugoi"
+      # Alt: se rodar fora do docker, use: postgresql://admin:masterkey123_daisugi_segura@host.docker.internal:5432/memoria_vetorial?schema=sugoi
+      # Alt: Se em VM Oracle, use: postgresql://admin:masterkey123_daisugi_segura@172.17.0.1:5432/memoria_vetorial?schema=sugoi
+
+      # JWT & Security
+      JWT_SECRET: "${JWT_SECRET:-dev-secret-change-in-prod-ORACLE}"
+      JWT_EXPIRY: "8h"
+
+      # Ollama (Cascata LLM)
+      OLLAMA_API_URL: "http://sugoi-ollama:11434"
+      OLLAMA_MODELS: '["deepseek-r1:7b", "qwen2.5-coder:7b", "saullm:7b"]'
+
+      # Gemini AI (Credencial corporativa Sugoi)
+      GEMINI_API_KEY: "${GEMINI_API_KEY:?ERRO: Configure GEMINI_API_KEY no .env}"
+      GEMINI_PROJECT_ID: "${GEMINI_PROJECT_ID:?ERRO: Configure GEMINI_PROJECT_ID no .env}"
+
+      # S3 / Object Storage (OCI)
+      S3_ENDPOINT: "${S3_ENDPOINT:-https://storage.googleapis.com}"
+      S3_BUCKET: "${S3_BUCKET:-sugoi-cadeia-valor}"
+      S3_ACCESS_KEY: "${S3_ACCESS_KEY}"
+      S3_SECRET_KEY: "${S3_SECRET_KEY}"
+
+      # PAM/IGA (Azure AD - Joiner/Leaver)
+      AZURE_AD_TENANT_ID: "${AZURE_AD_TENANT_ID}"
+      AZURE_AD_CLIENT_ID: "${AZURE_AD_CLIENT_ID}"
+      AZURE_AD_CLIENT_SECRET: "${AZURE_AD_CLIENT_SECRET}"
+
+      # Google SSO (@sugoi.com.br)
+      GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
+      GOOGLE_CLIENT_SECRET: "${GOOGLE_CLIENT_SECRET}"
+
+      # Logging & Monitoring
+      LOG_LEVEL: "info"
+      SENTRY_DSN: "${SENTRY_DSN:-}"
+
+    volumes:
+      # Logs
+      - /opt/daisugi/logs/sugoi:/app/logs
+
+      # Config (se necessário)
+      - /opt/daisugi/config/sugoi:/app/config:ro
+
+    depends_on:
+      - sugoi-ollama
+      # postgres não é dependência direta (já existe, rodando como dai_postgres_vector)
+
+    networks:
+      - daisugi-network
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+        labels: "service=sugoi-api"
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # OLLAMA (LLM Local - Cascata DeepSeek/Qwen/SaulLM)
+  # ─────────────────────────────────────────────────────────────────────────
+  sugoi-ollama:
+    image: ollama/ollama:latest
+    container_name: sugoi-ollama
+    restart: always
+    ports:
+      - "11434:11434"
+
+    environment:
+      OLLAMA_HOST: "0.0.0.0:11434"
+      OLLAMA_MODELS: "/root/.ollama/models"
+
+    volumes:
+      # Modelos persistentes (importante para não re-download toda vez)
+      - /opt/daisugi/ollama/models:/root/.ollama/models
+
+    networks:
+      - daisugi-network
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+        labels: "service=sugoi-ollama"
+
+    # Limitar recursos (importante em VM Always-On)
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: "8G"
+        reservations:
+          cpus: "2"
+          memory: "4G"
+
+# ─────────────────────────────────────────────────────────────────────────
+# NETWORK (Compartilhada com Kigyou)
+# ─────────────────────────────────────────────────────────────────────────
+networks:
+  daisugi-network:
+    external: true
+    name: daisugi-network
+    # Se network não existir ainda, criar com:
+    # docker network create daisugi-network
+
+# ─────────────────────────────────────────────────────────────────────────
+# VOLUMES (Compartilhados)
+# ─────────────────────────────────────────────────────────────────────────
+volumes:
+  # PostgreSQL já existe como container dai_postgres_vector externo
+  # Não criar aqui, apenas referenciar na rede
+
+# ═══════════════════════════════════════════════════════════════════════════
+# COMANDOS DE USO:
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# 1. CRIAR NETWORK (uma só vez):
+#    docker network create daisugi-network
+#
+# 2. BUILD DA IMAGEM (no diretório com Dockerfile):
+#    docker build -t sugoi-cadeia-valor:latest .
+#
+# 3. CRIAR ARQUIVO .env (credenciais):
+#    cp .env.example .env
+#    nano .env  # preencher valores
+#
+# 4. INICIAR SERVIÇOS:
+#    docker-compose -f docker-compose-sugoi-oracle.yml up -d
+#
+# 5. VERIFICAR LOGS:
+#    docker-compose -f docker-compose-sugoi-oracle.yml logs -f sugoi-api
+#    docker-compose -f docker-compose-sugoi-oracle.yml logs -f sugoi-ollama
+#
+# 6. PARAR SERVIÇOS:
+#    docker-compose -f docker-compose-sugoi-oracle.yml down
+#
+# 7. REMOVER VOLUMES (CUIDADO - deleta dados):
+#    docker-compose -f docker-compose-sugoi-oracle.yml down -v
+#
+# ═══════════════════════════════════════════════════════════════════════════
