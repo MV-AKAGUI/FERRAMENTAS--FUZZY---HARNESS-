@@ -57,19 +57,19 @@ const prisma = new PrismaClient();
 async function main() {
   const setores = [
     { codigo: '01', nome: 'Presidência' },
-    { codigo: '02', nome: 'Gestão & Governança' },
-    { codigo: '03', nome: 'Qualidade, Saúde, M.A. e Segurança' },
-    { codigo: '04', nome: 'Operações' },
-    { codigo: '05', nome: 'Customer Relationship Management' },
-    { codigo: '06', nome: 'Administração & Financeiro' },
-    { codigo: '07', nome: 'Planejamento Financeiro' },
-    { codigo: '08', nome: 'Controladoria' },
-    { codigo: '09', nome: 'Suprimentos' },
-    { codigo: '10', nome: 'Jurídico Empresa' },
-    { codigo: '11', nome: 'Jurídico Imóvel' },
-    { codigo: '12', nome: 'Land Bank' },
-    { codigo: '13', nome: 'Incorporação' },
-    { codigo: '14', nome: 'Engenharia' },
+    { codigo: '02', nome: 'Gente, cultura e gestão' },
+    { codigo: '03', nome: 'Operações' },
+    { codigo: '04', nome: 'Planejamento financeiro' },
+    { codigo: '05', nome: 'Controladoria' },
+    { codigo: '06', nome: 'Administrativo financeiro' },
+    { codigo: '07', nome: 'Jurídico empresarial' },
+    { codigo: '08', nome: 'QSMS' },
+    { codigo: '09', nome: 'Land bank e novos negócios' },
+    { codigo: '10', nome: 'Jurídico imobiliário' },
+    { codigo: '11', nome: 'Incorporação' },
+    { codigo: '12', nome: 'Engenharia' },
+    { codigo: '13', nome: 'Suprimentos' },
+    { codigo: '14', nome: 'CRM' },
   ];
 
   for (const setor of setores) {
