@@ -320,7 +320,7 @@ app.get("/app", (req, res) => {
       window.location.href = '/login';
     } else {
       const u = JSON.parse(userRaw);
-      document.getElementById('userName').textContent = `${u.nome} (${u.role})`;
+      document.getElementById("userName").textContent = u.nome + " (" + u.role + ")";
     }
 
     function logout() {
@@ -380,3 +380,4 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 export default app;
+
