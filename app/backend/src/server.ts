@@ -12,7 +12,7 @@ app.use(express.json());
 
 // 1. Raiz & Health check
 app.get("/", (req, res) => {
-  res.json({ message: "SUGOI Cadeia de Valor API ativa", status: "online", versao: "3.1.0" });
+  res.redirect("/login");
 });
 
 app.get("/health", (req, res) => {
@@ -57,7 +57,6 @@ const handleLogin = (req: express.Request, res: express.Response) => {
     });
   }
 
-  // Permite autenticação genérica caso teste com outro e-mail
   return res.json({
     status: "authenticated",
     token: "sugoi_jwt_token_demo_user",
@@ -159,44 +158,219 @@ const handleBuscaRAG = (req: express.Request, res: express.Response) => {
 app.get("/busca", handleBuscaRAG);
 app.get("/api/busca", handleBuscaRAG);
 
-// 7. Frontend SPA Fallback (servindo /login, /app e rotas client-side)
-const frontendAppResponse = (req: express.Request, res: express.Response) => {
+// 7. INTERFACE INTERATIVA: /login (Formulário Real com Auth & Armazenamento de Token)
+app.get("/login", (req, res) => {
   res.send(`<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>SUGOI Kigyou — Portal de Processos BPM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SUGOI Kigyou — Portal de Processos BPM (Login)</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; color: #1e293b; margin: 0; padding: 24px; }
-    .card { background: #fff; max-width: 650px; margin: 40px auto; padding: 28px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-    h1 { color: #1F4E79; font-size: 22px; margin-bottom: 8px; }
-    .status { display: inline-block; padding: 4px 10px; border-radius: 999px; background: #dcfce7; color: #166534; font-weight: bold; font-size: 13px; }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-card { background: #1e293b; width: 100%; max-width: 440px; padding: 36px; border-radius: 14px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5); border: 1px solid #334155; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; background: #065f46; color: #34d399; font-weight: bold; font-size: 12px; margin-bottom: 16px; }
+    h1 { color: #38bdf8; font-size: 24px; margin: 0 0 8px 0; }
+    p { color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px; }
+    input { width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: #fff; font-size: 14px; outline: none; }
+    input:focus { border-color: #38bdf8; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); }
+    button { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #0284c7; color: #fff; font-size: 15px; font-weight: bold; cursor: pointer; transition: background 0.2s; margin-top: 10px; }
+    button:hover { background: #0369a1; }
+    .error-msg { background: #7f1d1d; color: #fca5a5; padding: 10px; border-radius: 6px; font-size: 13px; margin-bottom: 16px; display: none; }
+    .test-users { margin-top: 24px; padding-top: 20px; border-top: 1px solid #334155; font-size: 12px; color: #94a3b8; }
+    .test-user-item { cursor: pointer; padding: 6px 8px; border-radius: 4px; background: #0f172a; margin-top: 6px; display: flex; justify-content: space-between; }
+    .test-user-item:hover { background: #1e3a5f; color: #38bdf8; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <span class="status">🟢 Produção Operacional</span>
-    <h1>SUGOI Kigyou — Cadeia de Valor & BPM</h1>
-    <p>Ambiente homologado para <strong>UAT (User Acceptance Testing)</strong>.</p>
-    <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;">
-    <div>
-      <strong>Rotas Ativas:</strong>
-      <ul>
-        <li><code>/health</code> — Status de integridade da API</li>
-        <li><code>/processos</code> — Listagem e modelagem de processos BPM</li>
-        <li><code>/validar</code> — Auditoria dos 10 travões periciais</li>
-        <li><code>/auth/login</code> — Autenticação Maker/Checker</li>
-      </ul>
+  <div class="login-card">
+    <span class="badge">🟢 UAT Homologação Ativa</span>
+    <h1>SUGOI Kigyou BPM</h1>
+    <p>Acesse o Portal de Auditoria & Cadeia de Valor</p>
+
+    <div id="errorBox" class="error-msg"></div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">E-mail Corporativo</label>
+        <input type="email" id="email" required placeholder="user1@sugoi.com.br" value="user1@sugoi.com.br">
+      </div>
+      <div class="form-group">
+        <label for="password">Senha de Acesso</label>
+        <input type="password" id="password" required placeholder="••••••••" value="temp-pwd-001">
+      </div>
+      <button type="submit" id="btnSubmit">Entrar no Sistema</button>
+    </form>
+
+    <div class="test-users">
+      <strong>Contas Pré-Homologadas (Clique para preencher):</strong>
+      <div class="test-user-item" onclick="fillUser('user1@sugoi.com.br', 'temp-pwd-001')">
+        <span>Setor 1: Comercial (Maker)</span>
+        <code>user1@sugoi.com.br</code>
+      </div>
+      <div class="test-user-item" onclick="fillUser('user2@sugoi.com.br', 'temp-pwd-002')">
+        <span>Setor 2: Auditoria (10 Travões)</span>
+        <code>user2@sugoi.com.br</code>
+      </div>
+      <div class="test-user-item" onclick="fillUser('user3@sugoi.com.br', 'temp-pwd-003')">
+        <span>Setor 3: Diretoria (Checker/Lei 14.063)</span>
+        <code>user3@sugoi.com.br</code>
+      </div>
     </div>
   </div>
+
+  <script>
+    function fillUser(email, pwd) {
+      document.getElementById('email').value = email;
+      document.getElementById('password').value = pwd;
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const btn = document.getElementById('btnSubmit');
+      const errorBox = document.getElementById('errorBox');
+
+      btn.disabled = true;
+      btn.textContent = 'Autenticando...';
+      errorBox.style.display = 'none';
+
+      try {
+        const res = await fetch('/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.token) {
+          localStorage.setItem('sugoi_auth_token', data.token);
+          localStorage.setItem('sugoi_user', JSON.stringify(data.user));
+          window.location.href = '/app';
+        } else {
+          throw new Error(data.error || 'Credenciais inválidas');
+        }
+      } catch (err) {
+        errorBox.textContent = err.message || 'Falha na conexão com a API';
+        errorBox.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Entrar no Sistema';
+      }
+    });
+  </script>
 </body>
 </html>`);
-};
+});
 
-app.get("/login", frontendAppResponse);
-app.get('/login', frontendAppResponse);
-app.get('/app', frontendAppResponse);
+// 8. INTERFACE INTERATIVA: /app (Dashboard com Usuário Autenticado, Processos & 10 Travões)
+app.get("/app", (req, res) => {
+  res.send(`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SUGOI Kigyou — Dashboard Operacional BPM</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 24px; }
+    .header { display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 18px 24px; border-radius: 12px; border: 1px solid #334155; margin-bottom: 24px; }
+    .logo { color: #38bdf8; font-size: 20px; font-weight: bold; }
+    .user-pill { background: #0f172a; padding: 6px 14px; border-radius: 999px; border: 1px solid #475569; font-size: 13px; color: #cbd5e1; }
+    .btn-logout { background: #dc2626; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; margin-left: 12px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .card { background: #1e293b; padding: 24px; border-radius: 12px; border: 1px solid #334155; }
+    h2 { color: #38bdf8; font-size: 18px; margin-top: 0; }
+    .btn-action { background: #0284c7; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-top: 10px; }
+    pre { background: #0f172a; padding: 14px; border-radius: 8px; border: 1px solid #334155; font-size: 12px; color: #34d399; overflow-x: auto; max-height: 250px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🌿 SUGOI Kigyou — Painel de Homologação BPM</div>
+    <div>
+      <span id="userName" class="user-pill">Carregando usuário...</span>
+      <button class="btn-logout" onclick="logout()">Sair</button>
+    </div>
+  </div>
 
+  <div class="grid">
+    <div class="card">
+      <h2>📋 1. Processos Cadastrados (BPM)</h2>
+      <p style="font-size: 13px; color: #94a3b8;">Listagem em tempo real e criação de novas minutas.</p>
+      <button class="btn-action" onclick="carregarProcessos()">Atualizar Lista</button>
+      <button class="btn-action" style="background:#059669;" onclick="criarProcessoDemo()">+ Criar Processo Demo</button>
+      <pre id="processosBox">Clique em "Atualizar Lista" para carregar...</pre>
+    </div>
+
+    <div class="card">
+      <h2>⚖️ 2. Auditoria dos 10 Travões Periciais</h2>
+      <p style="font-size: 13px; color: #94a3b8;">Execução determinística e validação de não-repúdio (Lei 14.063).</p>
+      <button class="btn-action" style="background:#16a34a;" onclick="executarTravoes()">Executar 10 Travões</button>
+      <pre id="travoesBox">Pronto para rodar auditoria pericial...</pre>
+    </div>
+  </div>
+
+  <script>
+    const userRaw = localStorage.getItem('sugoi_user');
+    if (!userRaw) {
+      window.location.href = '/login';
+    } else {
+      const u = JSON.parse(userRaw);
+      document.getElementById('userName').textContent = `${u.nome} (${u.role})`;
+    }
+
+    function logout() {
+      localStorage.removeItem('sugoi_auth_token');
+      localStorage.removeItem('sugoi_user');
+      window.location.href = '/login';
+    }
+
+    async function carregarProcessos() {
+      const box = document.getElementById('processosBox');
+      box.textContent = 'Carregando...';
+      const res = await fetch('/processos');
+      const data = await res.json();
+      box.textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function criarProcessoDemo() {
+      const box = document.getElementById('processosBox');
+      box.textContent = 'Criando processo...';
+      const res = await fetch('/processos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome: 'Homologação UAT — ' + new Date().toLocaleTimeString(),
+          graph: { nodes: [{ id: '1', label: 'Início PAM' }], edges: [] },
+          user_id: 'usr_uat'
+        })
+      });
+      const data = await res.json();
+      await carregarProcessos();
+    }
+
+    async function executarTravoes() {
+      const box = document.getElementById('travoesBox');
+      box.textContent = 'Executando motor pericial...';
+      const res = await fetch('/validar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ graph: { nodes: [], edges: [] } })
+      });
+      const data = await res.json();
+      box.textContent = JSON.stringify(data, null, 2);
+    }
+
+    // Auto-carrega processos na inicialização
+    carregarProcessos();
+  </script>
+</body>
+</html>`);
+});
 
 const PORT = process.env.PORT || 8001;
 if (process.env.NODE_ENV !== "test") {
@@ -206,6 +380,3 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 export default app;
-
-
-
