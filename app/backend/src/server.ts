@@ -194,7 +194,7 @@ const frontendAppResponse = (req: express.Request, res: express.Response) => {
 };
 
 app.get("/login", frontendAppResponse);
-app.get("/app*", frontendAppResponse);
+app.get("/app", frontendAppResponse);`napp.get("/app/*", frontendAppResponse);
 
 const PORT = process.env.PORT || 8001;
 if (process.env.NODE_ENV !== "test") {
@@ -204,3 +204,4 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 export default app;
+
