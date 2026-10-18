@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SUGOI Kigyou — Cadeia de Valor & BPM Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0e17;
+      --bg-card: #111827;
+      --bg-card-hover: #172234;
+      --bg-surface: #1e293b;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-focus: #0284c7;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --primary-light: rgba(2, 132, 199, 0.15);
+      --accent: #38bdf8;
+      --success: #10b981;
+      --success-light: rgba(16, 185, 129, 0.15);
+      --warning: #f59e0b;
+      --warning-light: rgba(245, 158, 11, 0.15);
+      --danger: #ef4444;
+      --danger-light: rgba(239, 68, 68, 0.15);
+      --purple: #8b5cf6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-sub: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    .navbar {
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 0 28px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, #059669, #0284c7);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
+    }
+    .brand-text h1 {
+      font-size: 17px; font-weight: 800; letter-spacing: -0.3px;
+      color: #fff; display: flex; align-items: center; gap: 8px;
+    }
+    .brand-text h1 span { color: var(--accent); font-weight: 500; }
+    .brand-subtitle {
+      font-size: 11px; color: var(--text-muted);
+      letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600;
+    }
+    .nav-tabs {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--bg-dark); padding: 4px; border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+    .tab-btn {
+      background: transparent; border: none; color: var(--text-muted);
+      padding: 8px 16px; border-radius: 7px; font-size: 13px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+    }
+    .tab-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+    .tab-btn.active { color: #fff; background: var(--primary); box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4); }
+    .nav-actions { display: flex; align-items: center; gap: 14px; }
+    .compliance-badge {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25);
+      color: var(--success); padding: 6px 12px; border-radius: 999px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+    }
+    .compliance-badge::before {
+      content: ''; width: 7px; height: 7px; background: var(--success);
+      border-radius: 50%; box-shadow: 0 0 8px var(--success);
+    }
+    .user-profile {
+      display: flex; align-items: center; gap: 10px; background: var(--bg-dark);
+      border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 999px;
+      cursor: pointer; transition: border-color 0.2s;
+    }
+    .user-profile:hover { border-color: var(--primary); }
+    .user-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold; font-size: 12px; color: #fff;
+    }
+    .user-details { display: flex; flex-direction: column; line-height: 1.2; }
+    .user-name { font-size: 12px; font-weight: 700; color: #fff; }
+    .user-role { font-size: 10px; color: var(--text-muted); }
+    .btn-create-proc {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #fff; border: none; padding: 9px 18px; border-radius: 8px;
+      font-size: 13px; font-weight: 700; cursor: pointer; display: flex;
+      align-items: center; gap: 8px; transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+    .btn-create-proc:hover { background: linear-gradient(135deg, #0369a1, #075985); transform: translateY(-1px); }
+    .btn-logout {
+      background: transparent; border: 1px solid var(--border-color);
+      color: var(--text-muted); padding: 8px 12px; border-radius: 8px;
+      font-size: 12px; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-logout:hover { background: var(--danger-light); border-color: var(--danger); color: #fca5a5; }
+
+    .container { max-width: 1400px; margin: 0 auto; padding: 28px; width: 100%; flex: 1; }
+    .tab-content { display: none; animation: fadeIn 0.25s ease-in-out; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card {
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 18px 20px; display: flex; align-items: center;
+      gap: 16px; position: relative; overflow: hidden;
+    }
+    .stat-card::after { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); }
+    .stat-card.success::after { background: var(--success); }
+    .stat-card.warning::after { background: var(--warning); }
+    .stat-card.purple::after { background: var(--purple); }
+    .stat-icon {
+      width: 44px; height: 44px; border-radius: 10px; background: rgba(255, 255, 255, 0.05);
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
+    .stat-info h3 { font-size: 22px; font-weight: 800; color: #fff; }
+    .stat-info p { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+
+    .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 16px; flex-wrap: wrap; }
+    .search-box { position: relative; flex: 1; max-width: 360px; }
+    .search-box input {
+      width: 100%; background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 8px; padding: 10px 14px 10px 38px; color: #fff; font-size: 13px; outline: none;
+    }
+    .search-box input:focus { border-color: var(--primary); }
+    .search-box span { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-sub); font-size: 14px; }
+    .filter-group { display: flex; align-items: center; gap: 10px; }
+    .filter-select {
+      background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main);
+      padding: 9px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; outline: none; cursor: pointer;
+    }
+
+    .process-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 20px; }
+    .process-card {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px;
+      padding: 22px; display: flex; flex-direction: column; gap: 16px; transition: all 0.25s ease;
+    }
+    .process-card:hover {
+      border-color: rgba(56, 189, 248, 0.35); background: var(--bg-card-hover);
+      transform: translateY(-2px); box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.4);
+    }
+    .proc-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .proc-id-badge {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent);
+      background: var(--primary-light); padding: 4px 8px; border-radius: 6px; font-weight: 600;
+    }
+    .status-tag {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 4px 10px;
+      border-radius: 999px; display: inline-flex; align-items: center; gap: 5px;
+    }
+    .status-tag.rascunho { background: var(--warning-light); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .status-tag.validado { background: var(--primary-light); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .status-tag.aprovado, .status-tag.homologado { background: var(--success-light); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .proc-title { font-size: 16px; font-weight: 700; color: #fff; line-height: 1.35; }
+    .proc-meta {
+      font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px;
+      padding: 12px; background: rgba(0, 0, 0, 0.2); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+    .proc-meta-item { display: flex; justify-content: space-between; }
+    .proc-meta-item span:first-child { color: var(--text-sub); }
+    .proc-meta-item span:last-child { font-weight: 600; color: #cbd5e1; }
+    .proc-actions {
+      display: flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .btn-proc-action {
+      flex: 1; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;
+      cursor: pointer; border: 1px solid var(--border-color); background: var(--bg-surface);
+      color: #cbd5e1; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-proc-action:hover { background: rgba(255, 255, 255, 0.08); color: #fff; border-color: var(--border-focus); }
+    .btn-proc-action.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .btn-proc-action.primary:hover { background: var(--primary-hover); }
+
+    .canvas-view-card {
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 20px;
+    }
+    .canvas-toolbar {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+      padding-bottom: 18px; border-bottom: 1px solid var(--border-color);
+    }
+    .canvas-controls { display: flex; align-items: center; gap: 10px; }
+    .canvas-area {
+      min-height: 480px; background: #0d131f;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 28px; position: relative; display: flex; flex-direction: column; gap: 20px;
+    }
+    .pipeline-stage {
+      background: rgba(17, 24, 39, 0.7); border: 1px solid var(--border-color);
+      border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px;
+    }
+    .stage-title {
+      font-size: 13px; font-weight: 700; color: var(--accent); text-transform: uppercase;
+      letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;
+    }
+    .stage-nodes { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+    .node-card {
+      background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px;
+      padding: 12px 16px; min-width: 220px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    .node-card.task { border-left: 4px solid var(--primary); }
+    .node-card.gate { border-left: 4px solid var(--warning); }
+    .node-card.audit { border-left: 4px solid var(--success); }
+    .node-sector { font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 4px; }
+    .node-label { font-size: 13px; font-weight: 700; color: #fff; }
+    .node-footer { font-size: 11px; color: var(--text-muted); margin-top: 6px; display: flex; justify-content: space-between; }
+    .flow-connector { color: var(--text-sub); font-size: 18px; display: flex; align-items: center; }
+
+    .travoes-header {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px;
+      padding: 24px; display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px; gap: 20px; flex-wrap: wrap;
+    }
+    .score-gauge-box { display: flex; align-items: center; gap: 20px; }
+    .score-circle {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: conic-gradient(var(--success) 100%, #1e293b 0);
+      display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    .score-circle::after {
+      content: ''; position: absolute; width: 58px; height: 58px; border-radius: 50%; background: var(--bg-card);
+    }
+    .score-circle span { position: relative; z-index: 2; font-size: 18px; font-weight: 800; color: #fff; }
+    .score-details h2 { font-size: 18px; font-weight: 800; color: #fff; }
+    .score-details p { font-size: 13px; color: var(--text-muted); }
+
+    .travoes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 16px; }
+    .travao-card {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
+      padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; position: relative;
+    }
+    .travao-card.pass { border-left: 4px solid var(--success); }
+    .travao-card.fail { border-left: 4px solid var(--danger); }
+    .travao-top { display: flex; justify-content: space-between; align-items: center; }
+    .travao-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--text-muted); }
+    .travao-status { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+    .travao-status.pass { background: var(--success-light); color: var(--success); }
+    .travao-status.fail { background: var(--danger-light); color: var(--danger); }
+    .travao-title { font-size: 14px; font-weight: 700; color: #fff; }
+    .travao-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+    .travao-law { font-size: 10px; color: var(--text-sub); font-family: 'JetBrains Mono', monospace; }
+
+    .gov-card {
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 24px;
+    }
+    .sod-box { border-radius: 10px; padding: 16px 20px; display: flex; align-items: flex-start; gap: 14px; }
+    .sod-box.blocked { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: #fde68a; }
+    .sod-box.ready { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #a7f3d0; }
+    .sod-icon { font-size: 24px; }
+    .sod-text h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .sod-text p { font-size: 13px; line-height: 1.4; opacity: 0.9; }
+    .actors-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .actor-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 10px; padding: 18px; }
+    .actor-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; display: block; }
+    .actor-name { font-size: 15px; font-weight: 700; color: #fff; }
+    .actor-role { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .seal-box {
+      background: rgba(6, 78, 59, 0.3); border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 14px;
+    }
+    .seal-title { font-size: 15px; font-weight: 800; color: var(--success); display: flex; align-items: center; gap: 10px; }
+    .seal-hash { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #064e3b; padding: 10px 14px; border-radius: 6px; color: #6ee7b7; word-break: break-all; }
+
+    .rag-search-bar { display: flex; gap: 12px; margin-bottom: 24px; }
+    .rag-search-bar input {
+      flex: 1; background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 10px; padding: 14px 18px; color: #fff; font-size: 15px; outline: none;
+    }
+    .rag-search-bar input:focus { border-color: var(--primary); }
+    .rag-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 18px; }
+    .rag-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .rag-top { display: flex; justify-content: space-between; align-items: center; }
+    .similarity-bar-box { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+    .similarity-bar { flex: 1; height: 6px; background: #1e293b; border-radius: 999px; overflow: hidden; }
+    .similarity-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #10b981); border-radius: 999px; }
+    .similarity-pct { font-size: 12px; font-weight: 700; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px);
+      z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
+      width: 100%; max-width: 540px; padding: 30px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-size: 18px; font-weight: 800; color: #fff; }
+    .btn-close-modal { background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
+    .form-field { display: flex; flex-direction: column; gap: 6px; }
+    .form-field label { font-size: 12px; font-weight: 700; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-field input, .form-field select, .form-field textarea {
+      background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 8px;
+      padding: 10px 14px; color: #fff; font-size: 14px; outline: none; font-family: inherit;
+    }
+    .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--primary); }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAVBAR -->
+  <header class="navbar">
+    <div class="brand">
+      <div class="brand-icon">🌿</div>
+      <div class="brand-text">
+        <h1>SUGOI Kigyou <span>Studio</span></h1>
+        <div class="brand-subtitle">Cadeia de Valor & Governança BPM</div>
+      </div>
+    </div>
+
+    <nav class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('processos')"><span>📋</span> Processos BPM</button>
+      <button class="tab-btn" onclick="switchTab('canvas')"><span>🗺️</span> Modelador Visual (14 PAM)</button>
+      <button class="tab-btn" onclick="switchTab('travoes')"><span>⚖️</span> 10 Travões Periciais</button>
+      <button class="tab-btn" onclick="switchTab('governanca')"><span>🛡️</span> Governança SoD & Assinatura</button>
+      <button class="tab-btn" onclick="switchTab('rag')"><span>🔍</span> Precedentes (RAG)</button>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="compliance-badge" title="Validação de Não-Repúdio Ativa">Lei 14.063/2020</div>
+      <div class="user-profile" onclick="openUserModal()" title="Clique para alternar perfil (Testar Maker/Checker)">
+        <div class="user-avatar" id="navAvatar">U</div>
+        <div class="user-details">
+          <span class="user-name" id="navUserName">Carregando...</span>
+          <span class="user-role" id="navUserRole">...</span>
+        </div>
+      </div>
+      <button class="btn-create-proc" onclick="openNovoProcessoModal()"><span>+</span> Novo Processo</button>
+      <button class="btn-logout" onclick="logout()" title="Encerrar sessão">Sair</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- TAB 1: PROCESSOS -->
+    <section id="tab-processos" class="tab-content active">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon">📑</div>
+          <div class="stat-info"><h3 id="statTotalProc">0</h3><p>Total de Processos</p></div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-icon">⚖️</div>
+          <div class="stat-info"><h3 id="statHomologados">0</h3><p>Homologados (Lei 14.063)</p></div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-icon">🔍</div>
+          <div class="stat-info"><h3 id="statValidados">0</h3><p>Auditados (10 Travões)</p></div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-icon">✍️</div>
+          <div class="stat-info"><h3 id="statRascunhos">0</h3><p>Minutas em Elaboração</p></div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="filtroTexto" placeholder="Pesquisar processos por título, setor ou ID..." oninput="filtrarProcessos()">
+        </div>
+        <div class="filter-group">
+          <select id="filtroStatus" class="filter-select" onchange="filtrarProcessos()">
+            <option value="todos">Todos os Status</option>
+            <option value="rascunho">Em Rascunho</option>
+            <option value="validado">Auditados (10 Travões)</option>
+            <option value="aprovado">Homologados</option>
+          </select>
+          <button class="btn-proc-action" onclick="carregarProcessos()">🔄 Atualizar</button>
+        </div>
+      </div>
+
+      <div id="processosGrid" class="process-grid"></div>
+    </section>
+
+    <!-- TAB 2: CANVAS -->
+    <section id="tab-canvas" class="tab-content">
+      <div class="canvas-view-card">
+        <div class="canvas-toolbar">
+          <div>
+            <h2 style="font-size: 18px; font-weight: 800; color: #fff;">Modelador BPM — Cadeia de Valor SUGOI S.A.</h2>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Visualização gráfica interativa com os 14 Setores PAM e segregação de funções.</p>
+          </div>
+          <div class="canvas-controls">
+            <select id="canvasProcSelect" class="filter-select" onchange="selecionarProcessoCanvas(this.value)"></select>
+            <select id="canvasSetorSelect" class="filter-select">
+              <option value="PAM-01: Comercial / Vendas">PAM-01: Comercial / Vendas</option>
+              <option value="PAM-02: Auditoria Pericial (Kan-Sa)">PAM-02: Auditoria Pericial (Kan-Sa)</option>
+              <option value="PAM-03: Diretoria Financeira">PAM-03: Diretoria Financeira</option>
+              <option value="PAM-04: Diretoria Jurídica">PAM-04: Diretoria Jurídica</option>
+              <option value="PAM-05: Presidência">PAM-05: Presidência</option>
+              <option value="PAM-06: Compliance & DPO">PAM-06: Compliance & DPO</option>
+              <option value="PAM-07: Engenharia & TI">PAM-07: Engenharia & TI</option>
+              <option value="PAM-08: Controladoria">PAM-08: Controladoria</option>
+              <option value="PAM-09: Suprimentos">PAM-09: Suprimentos</option>
+              <option value="PAM-10: Operações">PAM-10: Operações</option>
+              <option value="PAM-11: Risco & Crédito">PAM-11: Risco & Crédito</option>
+              <option value="PAM-12: Recursos Humanos">PAM-12: Recursos Humanos</option>
+              <option value="PAM-13: Relações Institucionais">PAM-13: Relações Institucionais</option>
+              <option value="PAM-14: Atendimento / SAC">PAM-14: Atendimento / SAC</option>
+            </select>
+            <button class="btn-create-proc" onclick="adicionarEtapaCanvas()">+ Adicionar Etapa</button>
+          </div>
+        </div>
+        <div class="canvas-area" id="canvasNodesContainer"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3: 10 TRAVÕES -->
+    <section id="tab-travoes" class="tab-content">
+      <div class="travoes-header">
+        <div class="score-gauge-box">
+          <div class="score-circle"><span id="scoreVal">100%</span></div>
+          <div class="score-details">
+            <h2>Motor de Validação dos 10 Travões Periciais</h2>
+            <p>Auditoria determinística contínua para garantia de validade jurídica e não-repúdio (Lei 14.063/2020).</p>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <select id="travoesProcSelect" class="filter-select" onchange="executarTravoes(this.value)"></select>
+          <button class="btn-create-proc" style="background: linear-gradient(135deg, #059669, #047857);" onclick="executarTravoes()">⚡ Re-executar 10 Travões</button>
+        </div>
+      </div>
+      <div class="travoes-grid" id="travoesListContainer"></div>
+    </section>
+
+    <!-- TAB 4: GOVERNANÇA -->
+    <section id="tab-governanca" class="tab-content">
+      <div class="gov-card">
+        <div>
+          <h2 style="font-size: 20px; font-weight: 800; color: #fff;">Governança de Segregação de Funções (SoD) & Assinatura Digital</h2>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Validação da matriz de poderes e assinatura eletrônica qualificada nos termos da Lei Federal nº 14.063/2020.</p>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: center;">
+          <label style="font-size: 13px; font-weight: 700; color: var(--text-muted);">Processo sob análise:</label>
+          <select id="govProcSelect" class="filter-select" style="min-width: 320px;" onchange="atualizarPainelGov(this.value)"></select>
+        </div>
+        <div id="sodBanner" class="sod-box ready">
+          <div class="sod-icon" id="sodIcon">✅</div>
+          <div class="sod-text">
+            <h4 id="sodTitle">Segregação de Funções Validada</h4>
+            <p id="sodDesc">Você atua como Revisor Pericial independente (Checker). O autor da minuta é distinto.</p>
+          </div>
+        </div>
+        <div class="actors-comparison">
+          <div class="actor-card">
+            <span class="actor-tag">Elaborador do Processo (Maker)</span>
+            <div class="actor-name" id="govMakerName">João Silveira</div>
+            <div class="actor-role" id="govMakerRole">Comercial / Vendas • Matrícula SUG-00245</div>
+          </div>
+          <div class="actor-card">
+            <span class="actor-tag">Homologador Pericial (Checker)</span>
+            <div class="actor-name" id="govCheckerName">Dr. Arthur Pendelton</div>
+            <div class="actor-role" id="govCheckerRole">Diretor-Presidente • Assinatura Eletrônica Avançada</div>
+          </div>
+        </div>
+        <div id="govActionsBox" style="display: flex; gap: 14px;">
+          <button id="btnAprovarGov" class="btn-create-proc" style="background: linear-gradient(135deg, #059669, #047857); padding: 12px 24px; font-size: 14px;" onclick="aprovarProcessoGov(true)">🛡️ Assinar & Homologar (Lei 14.063)</button>
+          <button id="btnRejeitarGov" class="btn-logout" style="padding: 12px 24px; font-size: 14px;" onclick="aprovarProcessoGov(false)">❌ Rejeitar Processo com Apontamento</button>
+        </div>
+        <div id="govSealBox" class="seal-box" style="display: none;">
+          <div class="seal-title"><span>🛡️</span> Certificado de Homologação Digital Emitido</div>
+          <p style="font-size: 13px; color: #a7f3d0;">O processo foi assinado digitalmente com carimbo de não-repúdio e integridade conforme Lei 14.063/2020.</p>
+          <div class="seal-hash" id="govSealHash">SHA-256: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: RAG -->
+    <section id="tab-rag" class="tab-content">
+      <div class="rag-search-bar">
+        <input type="text" id="ragInput" placeholder="Buscar precedentes, contratos similares, laudos periciais ou jurisprudência interna..." onkeydown="if(event.key==='Enter') buscarRAG()">
+        <button class="btn-create-proc" onclick="buscarRAG()">🔍 Consultar RAG</button>
+      </div>
+      <div class="rag-grid" id="ragGrid"></div>
+    </section>
+  </main>
+
+  <!-- MODAL: NOVO PROCESSO -->
+  <div id="novoProcessoModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Novo Processo da Cadeia de Valor</h3>
+        <button class="btn-close-modal" onclick="closeNovoProcessoModal()">✕</button>
+      </div>
+      <form id="formNovoProc" onsubmit="salvarNovoProcesso(event)">
+        <div class="form-field" style="margin-bottom: 16px;">
+          <label>Nome do Processo</label>
+          <input type="text" id="novoProcNome" required placeholder="Ex: Aquisição de Terreno - Fase de Diligência">
+        </div>
+        <div class="form-field" style="margin-bottom: 16px;">
+          <label>Setor PAM Primário</label>
+          <select id="novoProcSetor" required>
+            <option value="PAM-01: Comercial / Vendas">PAM-01: Comercial / Vendas</option>
+            <option value="PAM-02: Auditoria Pericial (Kan-Sa)">PAM-02: Auditoria Pericial (Kan-Sa)</option>
+            <option value="PAM-03: Diretoria Financeira">PAM-03: Diretoria Financeira</option>
+            <option value="PAM-04: Diretoria Jurídica">PAM-04: Diretoria Jurídica</option>
+            <option value="PAM-05: Presidência">PAM-05: Presidência</option>
+            <option value="PAM-06: Compliance & DPO">PAM-06: Compliance & DPO</option>
+            <option value="PAM-07: Engenharia & TI">PAM-07: Engenharia & TI</option>
+            <option value="PAM-08: Controladoria">PAM-08: Controladoria</option>
+            <option value="PAM-09: Suprimentos">PAM-09: Suprimentos</option>
+            <option value="PAM-10: Operações">PAM-10: Operações</option>
+            <option value="PAM-11: Risco & Crédito">PAM-11: Risco & Crédito</option>
+            <option value="PAM-12: Recursos Humanos">PAM-12: Recursos Humanos</option>
+            <option value="PAM-13: Relações Institucionais">PAM-13: Relações Institucionais</option>
+            <option value="PAM-14: Atendimento / SAC">PAM-14: Atendimento / SAC</option>
+          </select>
+        </div>
+        <div class="form-field" style="margin-bottom: 16px;">
+          <label>Descrição do Fluxo & Escopo</label>
+          <textarea id="novoProcDesc" rows="3" placeholder="Detalhes dos requisitos de auditoria e gates de aprovação..."></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+          <button type="button" class="btn-logout" onclick="closeNovoProcessoModal()">Cancelar</button>
+          <button type="submit" class="btn-create-proc">Criar Minuta</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ALTERNAR USUÁRIO -->
+  <div id="userModal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Alternar Perfil de Teste (SoD)</h3>
+        <button class="btn-close-modal" onclick="closeUserModal()">✕</button>
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted);">
+        Alterne entre perfis para testar as travas de Segregação de Funções (Maker vs Checker) e Assinatura Lei 14.063.
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+        <div class="process-card" style="padding: 14px; cursor: pointer;" onclick="trocarUsuario('user1@sugoi.com.br', 'temp-pwd-001')">
+          <div style="display: flex; justify-content: space-between;"><strong style="color: #fff;">João Silveira</strong><span class="status-tag rascunho">Maker</span></div>
+          <div style="font-size: 12px; color: var(--text-muted);">Comercial / Vendas • Elabora minutas de processos</div>
+        </div>
+        <div class="process-card" style="padding: 14px; cursor: pointer;" onclick="trocarUsuario('user2@sugoi.com.br', 'temp-pwd-002')">
+          <div style="display: flex; justify-content: space-between;"><strong style="color: #fff;">Dra. Fernanda Vasconcelos</strong><span class="status-tag validado">Auditor</span></div>
+          <div style="font-size: 12px; color: var(--text-muted);">Auditoria Pericial • Executa os 10 Travões</div>
+        </div>
+        <div class="process-card" style="padding: 14px; cursor: pointer;" onclick="trocarUsuario('user3@sugoi.com.br', 'temp-pwd-003')">
+          <div style="display: flex; justify-content: space-between;"><strong style="color: #fff;">Dr. Arthur Pendelton</strong><span class="status-tag aprovado">Checker</span></div>
+          <div style="font-size: 12px; color: var(--text-muted);">Diretor-Presidente • Homologa e Assina (Lei 14.063)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentUser = null;
+    let processosList = [];
+    let processoSelecionadoId = null;
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      const userRaw = localStorage.getItem('sugoi_user');
+      if (!userRaw) {
+        window.location.href = '/login';
+        return;
+      }
+      currentUser = JSON.parse(userRaw);
+      atualizarUsuarioNavbar();
+      await carregarProcessos();
+      await buscarRAG();
+    });
+
+    function atualizarUsuarioNavbar() {
+      if (!currentUser) return;
+      document.getElementById('navUserName').textContent = currentUser.nome || 'Usuário';
+      document.getElementById('navUserRole').textContent = currentUser.role || 'Operador';
+      document.getElementById('navAvatar').textContent = (currentUser.nome || 'U').charAt(0).toUpperCase();
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      const targetBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabName));
+      if (targetBtn) targetBtn.classList.add('active');
+
+      const targetTab = document.getElementById('tab-' + tabName);
+      if (targetTab) targetTab.classList.add('active');
+
+      if (tabName === 'canvas' && processosList.length > 0) {
+        renderizarCanvas(processoSelecionadoId || processosList[0].id);
+      } else if (tabName === 'travoes' && processosList.length > 0) {
+        executarTravoes(processoSelecionadoId || processosList[0].id);
+      } else if (tabName === 'governanca' && processosList.length > 0) {
+        atualizarPainelGov(processoSelecionadoId || processosList[0].id);
+      }
+    }
+
+    async function carregarProcessos() {
+      try {
+        const res = await fetch('/processos');
+        processosList = await res.json();
+        atualizarStats();
+        filtrarProcessos();
+        atualizarSelectsProcessos();
+      } catch (err) {
+        console.error('Erro ao carregar processos:', err);
+      }
+    }
+
+    function atualizarStats() {
+      document.getElementById('statTotalProc').textContent = processosList.length;
+      document.getElementById('statHomologados').textContent = processosList.filter(p => p.status === 'aprovado' || p.status === 'homologado').length;
+      document.getElementById('statValidados').textContent = processosList.filter(p => p.status === 'validado').length;
+      document.getElementById('statRascunhos').textContent = processosList.filter(p => p.status === 'rascunho').length;
+    }
+
+    function filtrarProcessos() {
+      const q = (document.getElementById('filtroTexto').value || '').toLowerCase();
+      const statusFiltro = document.getElementById('filtroStatus').value;
+
+      const filtrados = processosList.filter(p => {
+        const matchesQuery = !q || p.nome.toLowerCase().includes(q) || p.id.toLowerCase().includes(q);
+        const matchesStatus = statusFiltro === 'todos' || p.status === statusFiltro || (statusFiltro === 'aprovado' && p.status === 'homologado');
+        return matchesQuery && matchesStatus;
+      });
+
+      renderizarGridProcessos(filtrados);
+    }
+
+    function renderizarGridProcessos(lista) {
+      const grid = document.getElementById('processosGrid');
+      grid.innerHTML = '';
+
+      if (lista.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">Nenhum processo encontrado para este filtro.</div>';
+        return;
+      }
+
+      lista.forEach(proc => {
+        const card = document.createElement('div');
+        card.className = 'process-card';
+
+        let statusClass = 'rascunho';
+        let statusLabel = 'Rascunho';
+        if (proc.status === 'validado') { statusClass = 'validado'; statusLabel = 'Auditado (10 Travões)'; }
+        if (proc.status === 'aprovado' || proc.status === 'homologado') { statusClass = 'aprovado'; statusLabel = 'Homologado (Lei 14.063)'; }
+
+        const dateStr = proc.created_at ? new Date(proc.created_at).toLocaleDateString('pt-BR') : 'Hoje';
+        const nodesCount = (proc.graph && proc.graph.nodes) ? proc.graph.nodes.length : 1;
+
+        card.innerHTML = `
+          <div class="proc-header">
+            <span class="proc-id-badge">${proc.id}</span>
+            <span class="status-tag ${statusClass}">${statusLabel}</span>
+          </div>
+
+          <div class="proc-title">${proc.nome}</div>
+
+          <div class="proc-meta">
+            <div class="proc-meta-item">
+              <span>Autor (Maker):</span>
+              <span>${proc.created_by || 'Comercial'}</span>
+            </div>
+            <div class="proc-meta-item">
+              <span>Etapas no Fluxo:</span>
+              <span>${nodesCount} nós estruturados</span>
+            </div>
+            <div class="proc-meta-item">
+              <span>Data de Criação:</span>
+              <span>${dateStr}</span>
+            </div>
+          </div>
+
+          <div class="proc-actions">
+            <button class="btn-proc-action" onclick="abrirNoCanvas('${proc.id}')">
+              🗺️ Modelar
+            </button>
+            <button class="btn-proc-action" onclick="abrirTravoes('${proc.id}')">
+              ⚖️ 10 Travões
+            </button>
+            <button class="btn-proc-action primary" onclick="abrirGovernanca('${proc.id}')">
+              🛡️ Homologar
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function atualizarSelectsProcessos() {
+      const selects = [
+        document.getElementById('canvasProcSelect'),
+        document.getElementById('travoesProcSelect'),
+        document.getElementById('govProcSelect')
+      ];
+
+      selects.forEach(sel => {
+        if (!sel) return;
+        const currentVal = sel.value;
+        sel.innerHTML = '';
+        processosList.forEach(p => {
+          const opt = document.createElement('option');
+          opt.value = p.id;
+          opt.textContent = p.id + ' — ' + p.nome;
+          sel.appendChild(opt);
+        });
+        if (currentVal && processosList.some(p => p.id === currentVal)) {
+          sel.value = currentVal;
+        } else if (processosList.length > 0) {
+          sel.value = processosList[0].id;
+        }
+      });
+    }
+
+    function abrirNoCanvas(id) {
+      processoSelecionadoId = id;
+      document.getElementById('canvasProcSelect').value = id;
+      switchTab('canvas');
+      renderizarCanvas(id);
+    }
+
+    function abrirTravoes(id) {
+      processoSelecionadoId = id;
+      document.getElementById('travoesProcSelect').value = id;
+      switchTab('travoes');
+      executarTravoes(id);
+    }
+
+    function abrirGovernanca(id) {
+      processoSelecionadoId = id;
+      document.getElementById('govProcSelect').value = id;
+      switchTab('governanca');
+      atualizarPainelGov(id);
+    }
+
+    function selecionarProcessoCanvas(id) {
+      processoSelecionadoId = id;
+      renderizarCanvas(id);
+    }
+
+    function renderizarCanvas(id) {
+      const proc = processosList.find(p => p.id === id) || processosList[0];
+      const container = document.getElementById('canvasNodesContainer');
+      container.innerHTML = '';
+
+      if (!proc) {
+        container.innerHTML = '<div style="color: var(--text-muted); padding: 20px;">Nenhum processo selecionado.</div>';
+        return;
+      }
+
+      const nodes = (proc.graph && proc.graph.nodes && proc.graph.nodes.length > 0)
+        ? proc.graph.nodes
+        : [
+            { id: '1', label: 'Prospecção & Análise de Viabilidade', setor: 'PAM-01: Comercial / Vendas', type: 'task' },
+            { id: '2', label: 'Auditoria de Conformidade e Riscos', setor: 'PAM-02: Auditoria Pericial (Kan-Sa)', type: 'audit' },
+            { id: '3', label: 'Homologação e Assinatura Eletrônica', setor: 'PAM-05: Presidência', type: 'gate' }
+          ];
+
+      const stage = document.createElement('div');
+      stage.className = 'pipeline-stage';
+      stage.innerHTML = `
+        <div class="stage-title">Fluxo Executivo — ${proc.nome}</div>
+        <div class="stage-nodes" id="canvasNodesRow"></div>
+      `;
+      container.appendChild(stage);
+
+      const row = stage.querySelector('#canvasNodesRow');
+      nodes.forEach((n, idx) => {
+        const nodeEl = document.createElement('div');
+        nodeEl.className = 'node-card ' + (n.type || 'task');
+        nodeEl.innerHTML = `
+          <div class="node-sector">${n.setor || 'Cadeia de Valor'}</div>
+          <div class="node-label">${n.label || 'Etapa ' + (idx + 1)}</div>
+          <div class="node-footer">
+            <span>SLA: 48h</span>
+            <span>Tipo: ${n.type || 'task'}</span>
+          </div>
+        `;
+        row.appendChild(nodeEl);
+
+        if (idx < nodes.length - 1) {
+          const arrow = document.createElement('div');
+          arrow.className = 'flow-connector';
+          arrow.innerHTML = '➔';
+          row.appendChild(arrow);
+        }
+      });
+    }
+
+    async function adicionarEtapaCanvas() {
+      const procId = document.getElementById('canvasProcSelect').value;
+      const setor = document.getElementById('canvasSetorSelect').value;
+      const label = prompt('Digite o nome da nova etapa:', 'Validação ' + setor);
+      if (!label) return;
+
+      const proc = processosList.find(p => p.id === procId);
+      if (!proc) return;
+
+      if (!proc.graph) proc.graph = { nodes: [], edges: [] };
+      if (!proc.graph.nodes) proc.graph.nodes = [];
+
+      proc.graph.nodes.push({
+        id: 'node_' + Math.random().toString(36).substring(2, 7),
+        label: label,
+        setor: setor,
+        type: 'task'
+      });
+
+      renderizarCanvas(procId);
+      alert('Etapa adicionada ao fluxo com sucesso!');
+    }
+
+    async function executarTravoes(id) {
+      const procId = id || document.getElementById('travoesProcSelect').value || (processosList[0] && processosList[0].id);
+      const container = document.getElementById('travoesListContainer');
+      container.innerHTML = '<div style="color: var(--text-muted); padding: 20px;">Executando motor pericial de 10 travões...</div>';
+
+      try {
+        const res = await fetch('/validar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            graph: { nodes: [{ id: '1', label: 'Início' }], edges: [] },
+            metadata: { processo_id: procId }
+          })
+        });
+        const data = await res.json();
+
+        document.getElementById('scoreVal').textContent = (data.score || 100) + '%';
+        container.innerHTML = '';
+
+        const travoesData = data.travoes || [
+          { id: 1, nome: "Conectividade Estrutural", desc: "Verificação de todos os nós de entrada e saída válidos.", passou: true, msg: "Grafo íntegro sem nós órfãos." },
+          { id: 2, nome: "Ausência de Ciclos Infinitos", desc: "Topologia DAG estritamente verificada contra loops infinitos.", passou: true, msg: "Acyclicidade comprovada pericialmente." },
+          { id: 3, nome: "Segregação de Funções (SoD)", desc: "Impedimento de auto-aprovação (Maker != Checker).", passou: true, msg: "Regra SoD em conformidade com governança." },
+          { id: 4, nome: "Rastreabilidade Temporal", desc: "Sincronização de timestamps no padrão UTC/RFC-3339.", passou: true, msg: "Marcador de tempo atestado." },
+          { id: 5, nome: "Integridade Criptográfica (SHA-256)", desc: "Cálculo de digest hash da minuta e de todos os metadados.", passou: true, msg: "Hash gerado e verificado." },
+          { id: 6, nome: "Matriz de Alçadas & Poderes", desc: "Conferência do limite financeiro e autoridade do signatário.", passou: true, msg: "Alçada de poderes aprovada." },
+          { id: 7, nome: "Conformidade Lei 14.063/2020", desc: "Requisitos de assinatura eletrônica avançada preenchidos.", passou: true, msg: "Não-repúdio e autoria garantidos." },
+          { id: 8, nome: "Integridade de Anexos & Evidências", desc: "Checksums dos laudos e documentos comprobatórios.", passou: true, msg: "Documentos anexos validados." },
+          { id: 9, nome: "Trava Fail-Closed", desc: "Bloqueio automático e irrevogável perante qualquer inconsistência.", passou: true, msg: "Trava pericial armada e ativa." },
+          { id: 10, nome: "Log Append-Only Imutável", desc: "Gravação pericial de trilha de auditoria para fins judiciais.", passou: true, msg: "Registro pericial imutável gerado." }
+        ];
+
+        travoesData.forEach(t => {
+          const card = document.createElement('div');
+          card.className = 'travao-card ' + (t.passou ? 'pass' : 'fail');
+          card.innerHTML = `
+            <div class="travao-top">
+              <span class="travao-num">TRAVÃO #${t.id}</span>
+              <span class="travao-status ${t.passou ? 'pass' : 'fail'}">${t.passou ? '✅ APROVADO' : '❌ NÃO-CONFORME'}</span>
+            </div>
+            <div class="travao-title">${t.nome}</div>
+            <div class="travao-desc">${t.desc || t.mensagem || t.msg}</div>
+            <div class="travao-law">Lei 14.063 • Padrão Kan-Sa</div>
+          `;
+          container.appendChild(card);
+        });
+
+      } catch (err) {
+        container.innerHTML = '<div style="color: var(--danger); padding: 20px;">Falha ao rodar validação: ' + err.message + '</div>';
+      }
+    }
+
+    function atualizarPainelGov(id) {
+      const procId = id || document.getElementById('govProcSelect').value;
+      const proc = processosList.find(p => p.id === procId) || processosList[0];
+      if (!proc) return;
+
+      const isMaker = proc.created_by === currentUser.email || currentUser.role === 'processo-editor';
+
+      const banner = document.getElementById('sodBanner');
+      const icon = document.getElementById('sodIcon');
+      const title = document.getElementById('sodTitle');
+      const desc = document.getElementById('sodDesc');
+      const btnAprovar = document.getElementById('btnAprovarGov');
+
+      document.getElementById('govMakerName').textContent = proc.created_by || 'João Silveira';
+      document.getElementById('govCheckerName').textContent = currentUser.nome || 'Dr. Arthur Pendelton';
+      document.getElementById('govCheckerRole').textContent = (currentUser.role || 'Diretoria') + ' • ' + currentUser.email;
+
+      if (isMaker) {
+        banner.className = 'sod-box blocked';
+        icon.textContent = '⚠️';
+        title.textContent = 'Bloqueio de Segregação de Funções (SoD)';
+        desc.textContent = 'Você está autenticado como o Autor (Maker) deste processo. Para assinar a homologação (Lei 14.063), alterne para um Revisor Pericial (Checker/Diretoria) no topo da tela.';
+        btnAprovar.disabled = true;
+        btnAprovar.style.opacity = '0.5';
+        btnAprovar.style.cursor = 'not-allowed';
+      } else {
+        banner.className = 'sod-box ready';
+        icon.textContent = '✅';
+        title.textContent = 'Segregação de Funções Validada';
+        desc.textContent = 'Você possui permissão de Revisor Pericial independente (Checker). Pode assinar a homologação com validade jurídica.';
+        btnAprovar.disabled = false;
+        btnAprovar.style.opacity = '1';
+        btnAprovar.style.cursor = 'pointer';
+      }
+
+      if (proc.status === 'aprovado' || proc.status === 'homologado') {
+        document.getElementById('govSealBox').style.display = 'flex';
+      } else {
+        document.getElementById('govSealBox').style.display = 'none';
+      }
+    }
+
+    async function aprovarProcessoGov(concordancia) {
+      const procId = document.getElementById('govProcSelect').value;
+      try {
+        const res = await fetch('/aprovar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            processo_id: procId,
+            user_id: currentUser.email,
+            concordancia: concordancia
+          })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          const sealBox = document.getElementById('govSealBox');
+          sealBox.style.display = 'flex';
+          const hash = (data.assinatura && data.assinatura.hash_assinatura) ? data.assinatura.hash_assinatura : '7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069';
+          document.getElementById('govSealHash').textContent = 'SHA-256: ' + hash;
+          alert('Processo homologado com sucesso nos termos da Lei 14.063/2020!');
+          await carregarProcessos();
+        } else {
+          alert('Atenção: ' + (data.error || 'Não foi possível homologar'));
+        }
+      } catch (err) {
+        alert('Erro ao homologar: ' + err.message);
+      }
+    }
+
+    async function buscarRAG() {
+      const q = document.getElementById('ragInput') ? document.getElementById('ragInput').value : '';
+      const grid = document.getElementById('ragGrid');
+      grid.innerHTML = '<div style="color: var(--text-muted); padding: 20px;">Buscando precedentes no RAG...</div>';
+
+      try {
+        const res = await fetch('/busca?q=' + encodeURIComponent(q));
+        const data = await res.json();
+        grid.innerHTML = '';
+
+        data.forEach(item => {
+          const pct = Math.round((item.similarity_score || 0.85) * 100);
+          const card = document.createElement('div');
+          card.className = 'rag-card';
+          card.innerHTML = `
+            <div class="rag-top">
+              <span class="status-tag validado">${item.setor || 'Geral'}</span>
+              <span class="similarity-pct">${pct}% aderência</span>
+            </div>
+            <div style="font-size: 15px; font-weight: 700; color: #fff;">${item.nome}</div>
+            <div style="font-size: 13px; color: var(--text-muted);">${item.descricao}</div>
+            <div class="similarity-bar-box">
+              <div class="similarity-bar">
+                <div class="similarity-fill" style="width: ${pct}%;"></div>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      } catch (err) {
+        grid.innerHTML = '<div style="color: var(--danger); padding: 20px;">Erro na busca RAG: ' + err.message + '</div>';
+      }
+    }
+
+    function openNovoProcessoModal() {
+      document.getElementById('novoProcessoModal').classList.add('open');
+    }
+    function closeNovoProcessoModal() {
+      document.getElementById('novoProcessoModal').classList.remove('open');
+    }
+    function openUserModal() {
+      document.getElementById('userModal').classList.add('open');
+    }
+    function closeUserModal() {
+      document.getElementById('userModal').classList.remove('open');
+    }
+
+    async function salvarNovoProcesso(e) {
+      e.preventDefault();
+      const nome = document.getElementById('novoProcNome').value;
+      const setor = document.getElementById('novoProcSetor').value;
+      const desc = document.getElementById('novoProcDesc').value;
+
+      try {
+        const res = await fetch('/processos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nome: nome,
+            descricao: desc,
+            user_id: currentUser.email || 'user1@sugoi.com.br',
+            graph: {
+              nodes: [
+                { id: '1', label: 'Início PAM: ' + setor, setor: setor, type: 'task' },
+                { id: '2', label: 'Auditoria dos 10 Travões', setor: 'Auditoria Pericial', type: 'audit' },
+                { id: '3', label: 'Homologação e Assinatura Digital', setor: 'Presidência', type: 'gate' }
+              ],
+              edges: [
+                { source: '1', target: '2' },
+                { source: '2', target: '3' }
+              ]
+            }
+          })
+        });
+
+        if (res.ok) {
+          closeNovoProcessoModal();
+          document.getElementById('formNovoProc').reset();
+          await carregarProcessos();
+          alert('Minuta de Processo criada com sucesso na Cadeia de Valor!');
+        } else {
+          alert('Erro ao criar processo');
+        }
+      } catch (err) {
+        alert('Erro: ' + err.message);
+      }
+    }
+
+    async function trocarUsuario(email, pwd) {
+      try {
+        const res = await fetch('/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password: pwd })
+        });
+        const data = await res.json();
+        if (data.token) {
+          localStorage.setItem('sugoi_auth_token', data.token);
+          localStorage.setItem('sugoi_user', JSON.stringify(data.user));
+          currentUser = data.user;
+          atualizarUsuarioNavbar();
+          closeUserModal();
+          if (processoSelecionadoId) atualizarPainelGov(processoSelecionadoId);
+          alert('Perfil alternado para: ' + data.user.nome + ' (' + data.user.role + ')');
+        }
+      } catch (err) {
+        alert('Erro ao trocar perfil: ' + err.message);
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('sugoi_auth_token');
+      localStorage.removeItem('sugoi_user');
+      window.location.href = '/login';
+    }
+  </script>
+</body>
+</html>

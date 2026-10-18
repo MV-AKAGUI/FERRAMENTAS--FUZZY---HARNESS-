@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
+import fs from "fs";
 import { ProcessoService } from "./services/ProcessoService";
 import { TravaoService } from "./services/TravaoService";
 import { AprovacaoService } from "./services/AprovacaoService";
@@ -266,110 +267,33 @@ app.get("/login", (req, res) => {
 </html>`);
 });
 
-// 8. INTERFACE INTERATIVA: /app (Dashboard com Usuário Autenticado, Processos & 10 Travões)
+// 8. INTERFACE INTERATIVA: /app (Studio Executivo da Cadeia de Valor & BPM)
+const publicDirCandidates = [
+  path.join(__dirname, "../public"),
+  path.join(__dirname, "../../public"),
+  path.join(process.cwd(), "public"),
+  path.join(process.cwd(), "app/backend/public"),
+  path.join("/opt/daisugi/sugoi/app/backend/public")
+];
+
+let publicDir = "";
+for (const dir of publicDirCandidates) {
+  if (fs.existsSync(dir)) {
+    publicDir = dir;
+    break;
+  }
+}
+
+if (publicDir) {
+  app.use(express.static(publicDir));
+}
+
 app.get("/app", (req, res) => {
-  res.send(`<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SUGOI Kigyou — Dashboard Operacional BPM</title>
-  <style>
-    * { box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 24px; }
-    .header { display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 18px 24px; border-radius: 12px; border: 1px solid #334155; margin-bottom: 24px; }
-    .logo { color: #38bdf8; font-size: 20px; font-weight: bold; }
-    .user-pill { background: #0f172a; padding: 6px 14px; border-radius: 999px; border: 1px solid #475569; font-size: 13px; color: #cbd5e1; }
-    .btn-logout { background: #dc2626; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; margin-left: 12px; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .card { background: #1e293b; padding: 24px; border-radius: 12px; border: 1px solid #334155; }
-    h2 { color: #38bdf8; font-size: 18px; margin-top: 0; }
-    .btn-action { background: #0284c7; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-top: 10px; }
-    pre { background: #0f172a; padding: 14px; border-radius: 8px; border: 1px solid #334155; font-size: 12px; color: #34d399; overflow-x: auto; max-height: 250px; }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <div class="logo">🌿 SUGOI Kigyou — Painel de Homologação BPM</div>
-    <div>
-      <span id="userName" class="user-pill">Carregando usuário...</span>
-      <button class="btn-logout" onclick="logout()">Sair</button>
-    </div>
-  </div>
-
-  <div class="grid">
-    <div class="card">
-      <h2>📋 1. Processos Cadastrados (BPM)</h2>
-      <p style="font-size: 13px; color: #94a3b8;">Listagem em tempo real e criação de novas minutas.</p>
-      <button class="btn-action" onclick="carregarProcessos()">Atualizar Lista</button>
-      <button class="btn-action" style="background:#059669;" onclick="criarProcessoDemo()">+ Criar Processo Demo</button>
-      <pre id="processosBox">Clique em "Atualizar Lista" para carregar...</pre>
-    </div>
-
-    <div class="card">
-      <h2>⚖️ 2. Auditoria dos 10 Travões Periciais</h2>
-      <p style="font-size: 13px; color: #94a3b8;">Execução determinística e validação de não-repúdio (Lei 14.063).</p>
-      <button class="btn-action" style="background:#16a34a;" onclick="executarTravoes()">Executar 10 Travões</button>
-      <pre id="travoesBox">Pronto para rodar auditoria pericial...</pre>
-    </div>
-  </div>
-
-  <script>
-    const userRaw = localStorage.getItem('sugoi_user');
-    if (!userRaw) {
-      window.location.href = '/login';
-    } else {
-      const u = JSON.parse(userRaw);
-      document.getElementById("userName").textContent = u.nome + " (" + u.role + ")";
-    }
-
-    function logout() {
-      localStorage.removeItem('sugoi_auth_token');
-      localStorage.removeItem('sugoi_user');
-      window.location.href = '/login';
-    }
-
-    async function carregarProcessos() {
-      const box = document.getElementById('processosBox');
-      box.textContent = 'Carregando...';
-      const res = await fetch('/processos');
-      const data = await res.json();
-      box.textContent = JSON.stringify(data, null, 2);
-    }
-
-    async function criarProcessoDemo() {
-      const box = document.getElementById('processosBox');
-      box.textContent = 'Criando processo...';
-      const res = await fetch('/processos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nome: 'Homologação UAT — ' + new Date().toLocaleTimeString(),
-          graph: { nodes: [{ id: '1', label: 'Início PAM' }], edges: [] },
-          user_id: 'usr_uat'
-        })
-      });
-      const data = await res.json();
-      await carregarProcessos();
-    }
-
-    async function executarTravoes() {
-      const box = document.getElementById('travoesBox');
-      box.textContent = 'Executando motor pericial...';
-      const res = await fetch('/validar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ graph: { nodes: [], edges: [] } })
-      });
-      const data = await res.json();
-      box.textContent = JSON.stringify(data, null, 2);
-    }
-
-    // Auto-carrega processos na inicialização
-    carregarProcessos();
-  </script>
-</body>
-</html>`);
+  const appHtmlPath = publicDir ? path.join(publicDir, "app.html") : "";
+  if (appHtmlPath && fs.existsSync(appHtmlPath)) {
+    return res.sendFile(appHtmlPath);
+  }
+  res.redirect("/login");
 });
 
 const PORT = process.env.PORT || 8001;
