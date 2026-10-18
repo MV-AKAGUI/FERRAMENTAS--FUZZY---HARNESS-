@@ -83,6 +83,24 @@
     "OLLAMA_HOST": "127.0.0.1:11434",
     "META_GPT_API_KEY": "${env:META_GPT_API_KEY}",
     "ANTIGRAVITY_WEBHOOK_URL": "${env:ANTIGRAVITY_WEBHOOK_URL}",
-    "ANTIGRAVITY_API_KEY": "${env:ANTIGRAVITY_API_KEY}"
+    "ANTIGRAVITY_API_KEY": "${env:ANTIGRAVITY_API_KEY}",
+    "GOOGLE_DRIVE_FOLDER_ID": "${env:GOOGLE_DRIVE_FOLDER_ID}",
+    "GOOGLE_CREDENTIALS_FILE": ".agents/credentials/google_credentials.json"
+  },
+
+  "google_drive": {
+    "official_folder_name": "FERRAMENTAS-FUZZY-HARNESS",
+    "sync_enabled": true,
+    "sync_direction": "bidirectional",
+    "sync_interval": "on_commit",
+    "sync_on_completion": true,
+    "local_docs_path": "./docs",
+    "drive_destination_folders": {
+      "SDD": "SDD",
+      "Specs": "Specs",
+      "Designs": "Designs",
+      "Reports": "Reports",
+      "Executables": "Executables"
+    }
   }
 }

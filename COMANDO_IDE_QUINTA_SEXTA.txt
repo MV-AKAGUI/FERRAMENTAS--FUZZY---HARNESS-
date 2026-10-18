@@ -1,0 +1,272 @@
+================================================================================
+COMANDO EXECUTIVO - IDE ANTIGRAVITY
+================================================================================
+
+MISSÃO: Quinta-Sexta SEMANA 1 (Prisma Migrations + Auth Real)
+DATA: 2026-10-16 (Quinta-Sexta desta semana)
+EXECUTOR: IDE (terminal)
+BLOQUEADOR: Nenhum (infraestrutura 100% OK)
+CONFIANÇA: 95%
+ETA: 4 horas de trabalho (Quinta-Sexta)
+
+================================================================================
+PASSO 1: VERIFICAR REPOSITÓRIO E BRANCH
+================================================================================
+
+Comando:
+  git status
+  git log --oneline | head -5
+
+Esperado:
+  - Branch: feature/dai-integration-audit
+  - Commits recentes incluindo SDD + DAI_VIBE_QUINTA_SEXTA.md
+
+================================================================================
+PASSO 2: EXECUTAR PRISMA MIGRATIONS (1 hora)
+================================================================================
+
+Terminal 1 (Backend):
+
+  cd app/backend
+
+  cp ../../output/fase1_autogen/schema.prisma prisma/schema.prisma
+
+  npx prisma generate
+
+  npx prisma migrate dev --name "init"
+
+Validar:
+  psql postgresql://dev:dev@localhost:5432/cadeia_valor << 'EOF'
+  SELECT COUNT(*) FROM information_schema.tables
+  WHERE table_schema='public';
+  EOF
+
+  Esperado: 16 tabelas
+
+================================================================================
+PASSO 3: CRIAR SEED DATA (30 minutos)
+================================================================================
+
+Terminal 1 (Backend):
+
+  # Criar seed.ts
+  cat > prisma/seed.ts << 'EOF'
+  import { PrismaClient } from '@prisma/client';
+
+  const prisma = new PrismaClient();
+
+  async function main() {
+    const setores = [
+      { codigo: '01', nome: 'Presidência' },
+      { codigo: '02', nome: 'Gestão & Governança' },
+      { codigo: '03', nome: 'Qualidade, Saúde, M.A. e Segurança' },
+      { codigo: '04', nome: 'Operações' },
+      { codigo: '05', nome: 'Customer Relationship Management' },
+      { codigo: '06', nome: 'Administração & Financeiro' },
+      { codigo: '07', nome: 'Planejamento Financeiro' },
+      { codigo: '08', nome: 'Controladoria' },
+      { codigo: '09', nome: 'Suprimentos' },
+      { codigo: '10', nome: 'Jurídico Empresa' },
+      { codigo: '11', nome: 'Jurídico Imóvel' },
+      { codigo: '12', nome: 'Land Bank' },
+      { codigo: '13', nome: 'Incorporação' },
+      { codigo: '14', nome: 'Engenharia' },
+    ];
+
+    for (const setor of setores) {
+      await prisma.setor.upsert({
+        where: { codigo: setor.codigo },
+        update: {},
+        create: setor,
+      });
+    }
+
+    console.log('14 setores criados');
+  }
+
+  main().catch(console.error).finally(() => prisma.$disconnect());
+  EOF
+
+  # Adicionar em package.json:
+  # "prisma": { "seed": "ts-node prisma/seed.ts" }
+
+  npx prisma db seed
+
+Validar:
+  psql postgresql://dev:dev@localhost:5432/cadeia_valor << 'EOF'
+  SELECT COUNT(*) FROM setor;
+  EOF
+
+  Esperado: 14 rows
+
+================================================================================
+PASSO 4: IMPLEMENTAR AUTH REAL (2 horas)
+================================================================================
+
+Terminal 1 (Backend):
+
+  # 1. Criar middleware/auth-real.js
+  mkdir -p src/middleware
+
+  # 2. Copiar conteúdo de .claude/DAI_VIBE_QUINTA_SEXTA.md (FASE 3)
+  #    Arquivo: src/middleware/auth-real.js
+
+  # 3. Criar routes/auth.js
+  mkdir -p src/routes
+
+  # 4. Copiar conteúdo de .claude/DAI_VIBE_QUINTA_SEXTA.md (FASE 3, Passo 2)
+  #    Arquivo: src/routes/auth.js
+
+  # 5. Criar/atualizar src/app.js com Express setup
+  mkdir -p src
+
+  # 6. Iniciar servidor
+  npm run dev
+
+Terminal 2 (Testes):
+
+  # Teste 1: POST /api/auth/login
+  curl -X POST http://localhost:3001/api/auth/login \
+    -H "Content-Type: application/json" \
+    -H "X-User-CPF: 12345678901" \
+    -d '{"cpf":"12345678901"}'
+
+  Esperado: { "success": true, "token": "JWT...", "user": {...} }
+
+  # Teste 2: Validar LoginAudit
+  psql postgresql://dev:dev@localhost:5432/cadeia_valor << 'EOF'
+  SELECT cpf, resultado, timestamp FROM login_audit LIMIT 5;
+  EOF
+
+================================================================================
+PASSO 5: GO-LIVE GATE CHECKLIST (30 minutos)
+================================================================================
+
+Verificar TODOS os itens abaixo:
+
+  ☐ Docker rodando (docker ps)
+  ☐ PostgreSQL 5432 conectado (psql test)
+  ☐ Node.js v18+ (node --version)
+  ☐ npm pronto (npm --version)
+  ☐ Ollama 7 modelos (curl http://localhost:11434/api/tags)
+
+  ☐ Prisma migration aplicada (SELECT COUNT(*) FROM information_schema.tables)
+  ☐ 14 setores em DB (SELECT COUNT(*) FROM setor)
+  ☐ Auth middleware OK (no errors on startup)
+  ☐ POST /api/auth/login funcionando (curl test)
+  ☐ JWT generation OK (token in response)
+  ☐ CPF+banco testada (login audit log visible)
+  ☐ SoD validation pronto (middleware loaded)
+  ☐ LoginAudit logging OK (records in table)
+  ☐ Server running (http://localhost:3001)
+
+SE TODOS ✅: GO-LIVE GATE PASSOU
+SE ALGUM ☐: DEBUG + RETRY (máx 30 min)
+
+================================================================================
+PASSO 6: GIT COMMIT & PUSH
+================================================================================
+
+Terminal 1:
+
+  cd ../..  # Volta para raiz
+
+  git add app/backend/
+
+  git add .claude/SEMANA_1_ACOMPANHAMENTO.md  # Atualizar status
+
+  git commit -m "feat(semana1-quinta-sexta): Prisma migrations + Auth real
+
+- Prisma migrate dev --name init (16 tabelas)
+- 14 Setores seed (imutáveis, todos presentes)
+- Auth middleware (CPF lookup, JWT, SoD validation)
+- POST /api/auth/login endpoint (funcionando)
+- SoD-001 validation (criador ≠ aprovador)
+- LoginAudit + SodViolationLog logging
+- Server rodando em http://localhost:3001
+
+GO-LIVE GATE: PRONTO PARA SEMANA 2
+
+Co-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>"
+
+  git push origin feature/dai-integration-audit
+
+================================================================================
+PASSO 7: PRÓXIMO PASSO (SEMANA 2)
+================================================================================
+
+Segunda-Terça (SEMANA 2):
+  - REST APIs (GET/PUT processos)
+  - Ollama cascata (DeepSeek → Qwen → SaulLM)
+  - RapidFuzz duplicidade
+
+Quarta-Sexta (SEMANA 2):
+  - 10 Travões rodando em paralelo
+  - RAG + pgvector full setup
+  - Frontend React Flow canvas
+
+================================================================================
+RESUMO DE COMANDOS (COPIAR E EXECUTAR EM SEQUÊNCIA)
+================================================================================
+
+### Terminal 1: Backend Setup
+
+cd app/backend
+
+cp ../../output/fase1_autogen/schema.prisma prisma/schema.prisma
+npx prisma generate
+npx prisma migrate dev --name "init"
+
+# [Criar seed.ts conforme DAI_VIBE_QUINTA_SEXTA.md]
+
+npx prisma db seed
+
+# [Criar middleware/auth-real.js, routes/auth.js, app.js conforme brief]
+
+npm run dev
+
+### Terminal 2: Testes
+
+curl -X POST http://localhost:3001/api/auth/login \
+  -H "Content-Type: application/json" \
+  -H "X-User-CPF: 12345678901" \
+  -d '{"cpf":"12345678901"}'
+
+psql postgresql://dev:dev@localhost:5432/cadeia_valor << 'EOF'
+SELECT COUNT(*) FROM setor;
+SELECT COUNT(*) FROM login_audit;
+EOF
+
+### Terminal 3: Git Commit
+
+cd ../..
+git add .
+git commit -m "feat(semana1-quinta-sexta): Prisma + Auth real"
+git push origin feature/dai-integration-audit
+
+================================================================================
+CONTATO & SUPORTE
+================================================================================
+
+Executor: IDE Antigravity (Ronaldo)
+Coordenador: Dai_Vibe_Code (24/7 agent)
+PMO: Claude (Lead Architect)
+
+Dúvidas?
+  1. Ler .claude/DAI_VIBE_QUINTA_SEXTA.md (brief detalhado)
+  2. Ler .claude/SEMANA_1_ACOMPANHAMENTO.md (status atualizado)
+  3. Consultar README.md em cada pasta
+
+================================================================================
+DATA & STATUS
+================================================================================
+
+Data: 2026-10-16 (quinta-sexta desta semana)
+Status: 🟢 VERDE PARA EXECUÇÃO
+ETA GO-LIVE: Sexta-feira 17:00
+Confiança: 95%
+Risco: BAIXO
+
+================================================================================
+FIM DO COMANDO EXECUTIVO
+================================================================================

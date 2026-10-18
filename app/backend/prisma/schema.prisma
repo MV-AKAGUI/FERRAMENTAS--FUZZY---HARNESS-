@@ -1,0 +1,259 @@
+// Prisma Schema - SUGOI_CADEIA_DE_VALOR FASE 1
+// Auto-generated schema from SDD (2026-10-16)
+// Ready for: npx prisma migrate dev --name "init"
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ============================================================================
+// CORE ENTITIES (14 Setores Imutáveis)
+// ============================================================================
+
+model Setor {
+  id    Int     @id @default(autoincrement())
+  codigo String @unique @db.VarChar(10)
+  nome  String  @db.VarChar(100)
+  ativo Boolean @default(true)
+
+  // Relations
+  cadeiras      Cadeira[]
+  pessoasCadeira PessoaCadeira[]
+  processosBPM  ProcessoBPM[]
+
+  @@index([codigo])
+}
+
+model Cadeira {
+  id             Int    @id @default(autoincrement())
+  codigo         String @unique @db.VarChar(20)
+  nome           String @db.VarChar(100)
+  alcada_nivel   Int    // 0=Diretor, 1=Gerente, 2=Coordenador, 3=Tecnico
+  setor_id       Int
+  ativo          Boolean @default(true)
+
+  // Relations
+  setor          Setor @relation(fields: [setor_id], references: [id])
+  pessoasCadeira PessoaCadeira[]
+
+  @@index([codigo])
+  @@index([setor_id])
+}
+
+model PessoaCadeira {
+  id            Int    @id @default(autoincrement())
+  cpf           String @unique @db.VarChar(11)
+  nome          String @db.VarChar(200)
+  email         String? @db.VarChar(100)
+  cadeira_id    Int
+  setor_id      Int
+  data_inicio   DateTime
+  data_fim      DateTime?
+  ativo         Boolean @default(true)
+  created_at    DateTime @default(now())
+
+  // Relations
+  cadeira       Cadeira @relation(fields: [cadeira_id], references: [id])
+  setor         Setor @relation(fields: [setor_id], references: [id])
+  definicoeRaci DefinicaoRaciDocumento[]
+  loginAudits   LoginAudit[]
+  sodViolations SodViolationLog[]
+  logAuditoria  LogAuditoria[]
+
+  @@index([cpf])
+  @@index([cadeira_id])
+  @@index([setor_id])
+}
+
+// ============================================================================
+// PROCESS DESIGN (BPM)
+// ============================================================================
+
+model ProcessoBPM {
+  id               Int    @id @default(autoincrement())
+  setor_id         Int
+  nome             String @db.VarChar(255)
+  descricao        String?
+  status           String @db.VarChar(50) // RASCUNHO, VALIDACAO, PUBLICADO
+  criado_por_cpf   String @db.VarChar(11)
+  criado_em        DateTime @default(now())
+  atualizado_em    DateTime @updatedAt
+
+  // Relations
+  setor            Setor @relation(fields: [setor_id], references: [id])
+  nosBPM           NoBPM[]
+  arestaBPM        ArestaBPM[]
+  definicoeRaci    DefinicaoRaciDocumento[]
+
+  @@index([setor_id])
+  @@index([status])
+  @@index([criado_por_cpf])
+}
+
+model NoBPM {
+  id             Int    @id @default(autoincrement())
+  processo_id    Int
+  nome           String @db.VarChar(100)
+  tipo           String @db.VarChar(50) // INICIO, ATIVIDADE, DECISAO, FIM
+  descricao      String?
+  posicao_x      Float?
+  posicao_y      Float?
+
+  // Relations
+  processo       ProcessoBPM @relation(fields: [processo_id], references: [id], onDelete: Cascade)
+
+  @@index([processo_id])
+}
+
+model ArestaBPM {
+  id              Int    @id @default(autoincrement())
+  processo_id     Int
+  no_origem_id    Int
+  no_destino_id   Int
+  label           String? @db.VarChar(100)
+
+  // Relations
+  processo        ProcessoBPM @relation(fields: [processo_id], references: [id], onDelete: Cascade)
+
+  @@index([processo_id])
+}
+
+// ============================================================================
+// GOVERNANCE & RACI
+// ============================================================================
+
+model DefinicaoRaciDocumento {
+  id                Int    @id @default(autoincrement())
+  cpf_pessoa        String @db.VarChar(11)
+  processo_id       Int
+  papel_raci        String @db.VarChar(1) // R, A, C, I
+  data_designacao   DateTime @default(now())
+
+  // Relations
+  pessoa            PessoaCadeira @relation(fields: [cpf_pessoa], references: [cpf])
+  processo          ProcessoBPM @relation(fields: [processo_id], references: [id], onDelete: Cascade)
+
+  @@unique([cpf_pessoa, processo_id, papel_raci])
+  @@index([processo_id])
+}
+
+// ============================================================================
+// AUDIT & COMPLIANCE
+// ============================================================================
+
+model LoginAudit {
+  id              BigInt   @id @default(autoincrement())
+  cpf             String   @db.VarChar(11)
+  timestamp       DateTime @default(now())
+  ip_address      String?  @db.VarChar(15)
+  resultado       String   @db.VarChar(20) // SUCCESS, FAILED, LOCKOUT
+
+  // Relations
+  pessoa          PessoaCadeira @relation(fields: [cpf], references: [cpf])
+
+  @@index([cpf])
+  @@index([timestamp])
+}
+
+model SodViolationLog {
+  id              BigInt   @id @default(autoincrement())
+  cpf_executor    String   @db.VarChar(11)
+  acao            String   @db.VarChar(100) // CRIAR_PROCESSO, VALIDAR, APROVAR
+  processo_id     Int?
+  violacao_tipo   String   @db.VarChar(50) // SoD-001, SoD-002, etc
+  timestamp       DateTime @default(now())
+  bloqueado       Boolean  @default(true)
+
+  // Relations
+  pessoa          PessoaCadeira @relation(fields: [cpf_executor], references: [cpf])
+
+  @@index([cpf_executor])
+  @@index([violacao_tipo])
+  @@index([timestamp])
+}
+
+model LogAuditoria {
+  id              Int      @id @default(autoincrement())
+  cpf_executor    String   @db.VarChar(11)
+  acao            String   @db.VarChar(255)
+  documento_id    Int?
+  resultado       String   @db.VarChar(50)
+  timestamp       DateTime @default(now())
+
+  // Relations
+  pessoa          PessoaCadeira @relation(fields: [cpf_executor], references: [cpf])
+
+  @@index([cpf_executor])
+  @@index([acao])
+  @@index([timestamp])
+}
+
+// ============================================================================
+// VALIDATION & ANALYSIS
+// ============================================================================
+
+model AnalisadorDocumento {
+  id              Int    @id @default(autoincrement())
+  validacao       String @db.VarChar(100) // BPM, HAP, EAP, SoD, RapidFuzz, etc
+  modelo          String @db.VarChar(100) // deepseek-r1, saullm, rapidfuzz
+  confianca       Int    // 0-100
+  timestamp       DateTime @default(now())
+  log_id          String @unique
+  resultado       String
+  tempo_ms        Int?
+
+  @@index([validacao])
+  @@index([timestamp])
+}
+
+// ============================================================================
+// RAG & VECTOR SEARCH
+// ============================================================================
+
+model ProcessoEmbedding {
+  id              Int    @id @default(autoincrement())
+  processo_id     Int
+  embedding       Unsupported("vector(1536)")? // OpenAI embedding dimension
+  conteudo        String
+  timestamp       DateTime @default(now())
+
+  @@index([processo_id])
+}
+
+// ============================================================================
+// ASSINATURA DIGITAL & PUBLICAÇÃO
+// ============================================================================
+
+model AssinaturaDigital {
+  id              Int    @id @default(autoincrement())
+  processo_id     Int
+  hash            String @unique
+  cpf_assinante   String @db.VarChar(11)
+  timestamp_acordo DateTime
+  link_publicacao String?
+  publicado       Boolean @default(false)
+  publicado_em    DateTime?
+
+  @@index([processo_id])
+  @@index([cpf_assinante])
+  @@index([timestamp_acordo])
+}
+
+// ============================================================================
+// INDEXES & CONSTRAINTS
+// ============================================================================
+
+// Unique constraint: pessoa por cadeira (uma pessoa por vez)
+// Handled at application level with data_fim = null check
+
+// Audit-only tables (no deletes, only inserts)
+// LoginAudit, SodViolationLog, LogAuditoria: append-only pattern
+
+// Vector search for RAG
+// ProcessoEmbedding: requires pgvector extension
+// CREATE EXTENSION IF NOT EXISTS vector;

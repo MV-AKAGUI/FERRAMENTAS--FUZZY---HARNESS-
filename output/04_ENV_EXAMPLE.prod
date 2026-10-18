@@ -1,0 +1,141 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# .env.production - SUGOI_CADEIA_DE_VALOR no Oracle OCI
+# ═══════════════════════════════════════════════════════════════════════════
+# Arquivo de exemplo de configuração para produção no Oracle
+# INSTRUÇÕES:
+#   1. Copiar este arquivo para app/backend/.env.production
+#   2. Substituir todos os valores [CONFIGURE_AQUI]
+#   3. Manter valores sensíveis FORA do Git (use Secret Manager)
+#   4. Não commitar este arquivo com valores reais
+# ═══════════════════════════════════════════════════════════════════════════
+
+# ───────────────────────────────────────────────────────────────────────────
+# APLICAÇÃO
+# ───────────────────────────────────────────────────────────────────────────
+NODE_ENV=production
+PORT=3001
+LOG_LEVEL=info
+
+# ───────────────────────────────────────────────────────────────────────────
+# DATABASE (PostgreSQL Oracle - Compartilhado)
+# ───────────────────────────────────────────────────────────────────────────
+# Se rodar em Docker dentro do Oracle:
+DATABASE_URL=postgresql://admin:masterkey123_daisugi_segura@host.docker.internal:5432/memoria_vetorial?schema=sugoi
+
+# Se rodar em VM dentro do Oracle (sem Docker):
+# DATABASE_URL=postgresql://admin:masterkey123_daisugi_segura@localhost:5432/memoria_vetorial?schema=sugoi
+
+# Se conectar do externo (sua máquina):
+# DATABASE_URL=postgresql://admin:masterkey123_daisugi_segura@137.131.151.74:5432/memoria_vetorial?schema=sugoi
+
+# ───────────────────────────────────────────────────────────────────────────
+# JWT & SECURITY
+# ───────────────────────────────────────────────────────────────────────────
+# IMPORTANTE: Gerar chave forte com: openssl rand -base64 32
+JWT_SECRET=[CONFIGURE_AQUI_CHAVE_SUPER_SEGURA_openssl_rand]
+JWT_EXPIRY=8h
+
+# ───────────────────────────────────────────────────────────────────────────
+# OLLAMA (LLM Local - Cascata Inteligente)
+# ───────────────────────────────────────────────────────────────────────────
+OLLAMA_API_URL=http://sugoi-ollama:11434
+# Se fora de Docker:
+# OLLAMA_API_URL=http://localhost:11434
+# Se acesso remoto:
+# OLLAMA_API_URL=http://137.131.151.74:11434
+
+# Modelos disponíveis (ordem de cascata)
+OLLAMA_MODELS=["deepseek-r1:7b", "qwen2.5-coder:7b", "saullm:7b"]
+
+# ───────────────────────────────────────────────────────────────────────────
+# GEMINI AI (Credencial Corporativa - Sugoi S/A)
+# ───────────────────────────────────────────────────────────────────────────
+# Obter em: Google Cloud Console (Projeto SUGOI)
+GEMINI_API_KEY=[CONFIGURE_AQUI_com_chave_GCP_Gemini]
+GEMINI_PROJECT_ID=[CONFIGURE_AQUI_com_id_projeto_GCP]
+
+# ───────────────────────────────────────────────────────────────────────────
+# S3 / OBJECT STORAGE (OCI ou GCS)
+# ───────────────────────────────────────────────────────────────────────────
+# Opção 1: Oracle Object Storage (OCI)
+# S3_ENDPOINT=https://[tenancy].compat.objectstorage.[region].oraclecloud.com
+# S3_REGION=sa-saopaulo-1
+# S3_BUCKET=sugoi-cadeia-valor
+# S3_ACCESS_KEY=[CONFIGURE_AQUI_com_access_key_OCI]
+# S3_SECRET_KEY=[CONFIGURE_AQUI_com_secret_key_OCI]
+
+# Opção 2: Google Cloud Storage
+S3_ENDPOINT=https://storage.googleapis.com
+S3_BUCKET=sugoi-cadeia-valor
+S3_ACCESS_KEY=[CONFIGURE_AQUI_com_service_account_json_key]
+S3_SECRET_KEY=[CONFIGURE_AQUI_ou_usar_Application_Default_Credentials]
+
+# ───────────────────────────────────────────────────────────────────────────
+# AUTENTICAÇÃO (Google SSO + Azure AD + Magic Link)
+# ───────────────────────────────────────────────────────────────────────────
+
+# Google Workspace (@sugoi.com.br)
+GOOGLE_CLIENT_ID=[CONFIGURE_AQUI_com_client_id_Google]
+GOOGLE_CLIENT_SECRET=[CONFIGURE_AQUI_com_client_secret_Google]
+GOOGLE_CALLBACK_URL=https://sugoi.daisugi.com.br/auth/google/callback
+
+# Microsoft Azure AD / Entra ID
+AZURE_AD_TENANT_ID=[CONFIGURE_AQUI_com_tenant_id]
+AZURE_AD_CLIENT_ID=[CONFIGURE_AQUI_com_client_id_Azure]
+AZURE_AD_CLIENT_SECRET=[CONFIGURE_AQUI_com_client_secret_Azure]
+AZURE_AD_CALLBACK_URL=https://sugoi.daisugi.com.br/auth/azure/callback
+
+# ───────────────────────────────────────────────────────────────────────────
+# PAM / IGA (Identidade e Acesso - Joiner/Leaver)
+# ───────────────────────────────────────────────────────────────────────────
+PAM_API_URL=[CONFIGURE_AQUI_ou_deixar_em_branco_se_manual]
+PAM_API_KEY=[CONFIGURE_AQUI_ou_deixar_em_branco_se_manual]
+
+# ───────────────────────────────────────────────────────────────────────────
+# MONITORAMENTO & LOGGING
+# ───────────────────────────────────────────────────────────────────────────
+# Sentry (Error tracking - opcional)
+SENTRY_DSN=[CONFIGURE_AQUI_ou_deixar_em_branco]
+SENTRY_ENVIRONMENT=production
+SENTRY_TRACES_SAMPLE_RATE=0.1
+SENTRY_PROFILES_SAMPLE_RATE=0.1
+
+# CloudWatch / Logging
+CLOUDWATCH_REGION=sa-saopaulo-1
+CLOUDWATCH_LOG_GROUP=sugoi-cadeia-valor
+
+# ───────────────────────────────────────────────────────────────────────────
+# INTEGRAÇÕES EXTERNAS
+# ───────────────────────────────────────────────────────────────────────────
+
+# Clicksign / DocuSign (Assinatura Digital)
+DOCUSIGN_API_URL=[CONFIGURE_AQUI_ou_deixar_em_branco]
+DOCUSIGN_API_KEY=[CONFIGURE_AQUI_ou_deixar_em_branco]
+
+# SIENGE ERP (Integração de medições)
+SIENGE_API_URL=[CONFIGURE_AQUI_ou_deixar_em_branco]
+SIENGE_API_KEY=[CONFIGURE_AQUI_ou_deixar_em_branco]
+
+# ═══════════════════════════════════════════════════════════════════════════
+# INSTRUÇÕES DE USO:
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# 1. COPIAR PARA PRODUÇÃO:
+#    cp .env.example .env.production
+#
+# 2. EDITAR COM VALORES REAIS:
+#    nano .env.production
+#
+# 3. CARREGAR DURANTE DEPLOY (Docker):
+#    docker run --env-file .env.production ...
+#
+# 4. OU USAR SECRET MANAGER (Recomendado para prod):
+#    - Oracle Key Management Service (OKE)
+#    - Google Secret Manager
+#    - HashiCorp Vault
+#
+# 5. NUNCA COMITAR ARQUIVO COM VALORES REAIS:
+#    echo ".env.production" >> .gitignore
+#    git add .gitignore
+#
+# ═══════════════════════════════════════════════════════════════════════════
