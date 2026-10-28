@@ -1,0 +1,281 @@
+{
+  "resumo": {
+    "backend": "llama",
+    "casos": 30,
+    "acerto": 0.867,
+    "acerto_dificeis": 0.769,
+    "acerto_por_classe": {
+      "juridico": 0.9,
+      "financeiro": 0.9,
+      "investigacao": 0.8
+    },
+    "confusao": {
+      "juridico": {
+        "juridico": 9,
+        "financeiro": 1
+      },
+      "financeiro": {
+        "financeiro": 9,
+        "juridico": 1
+      },
+      "investigacao": {
+        "investigacao": 8,
+        "juridico": 1,
+        "financeiro": 1
+      }
+    },
+    "latencia_ms": {
+      "p50": 791,
+      "p95": 1015,
+      "total_s": 23.8
+    },
+    "erros": [
+      "vj06",
+      "vf09",
+      "vi06",
+      "vi09"
+    ]
+  },
+  "linhas": [
+    {
+      "id": "vj01",
+      "texto": "O contrato de mútuo entre a holding e a SPE precisa ser registrado para valer contra terceiros?",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "vj02",
+      "texto": "Podemos rescindir o contrato com a construtora por atraso na obra sem pagar multa?",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "vj03",
+      "texto": "Quais são as obrigações do agente fiduciário segundo a resolução da CVM sobre securitização?",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "vj04",
+      "texto": "O fiador renunciou ao benefício de ordem no contrato. O banco pode cobrar dele primeiro?",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "vj05",
+      "texto": "Prepare a minuta de um acordo de standstill com os credores bancários.",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "vj06",
+      "texto": "A penhora on-line das contas da empresa respeitou o limite legal para verbas salariais?",
+      "rotulo": "juridico",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "vj07",
+      "texto": "O índice de correção trocado no aditivo é abusivo pelo Código Civil? Quero argumentos para a defesa.",
+      "rotulo": "juridico",
+      "dificil": true,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "vj08",
+      "texto": "A ata do conselho que aprovou a garantia foi assinada por quem não era conselheiro. O ato é nulo?",
+      "rotulo": "juridico",
+      "dificil": true,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "vj09",
+      "texto": "Precisamos de cláusula de arbitragem no novo contrato de cessão de créditos?",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "vj10",
+      "texto": "Os credores podem pedir a falência se o plano de recuperação não for cumprido no prazo?",
+      "rotulo": "juridico",
+      "dificil": true,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "vf01",
+      "texto": "Quanto a empresa gastou com juros bancários no primeiro semestre?",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "vf02",
+      "texto": "Faça a curva de vencimentos da dívida por ano até 2030.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "vf03",
+      "texto": "Qual a margem bruta por empreendimento das SPEs no último exercício?",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "vf04",
+      "texto": "Simule a parcela se renegociarmos a dívida em 60 meses a CDI mais 3%.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "vf05",
+      "texto": "Consolide os balanços das cinco SPEs e da holding eliminando as operações entre elas.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "vf06",
+      "texto": "O valor da garantia ainda cobre o saldo devedor do financiamento depois da desvalorização do imóvel?",
+      "rotulo": "financeiro",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "vf07",
+      "texto": "Confira se a soma das parcelas pagas bate com o total informado pelo credor no extrato.",
+      "rotulo": "financeiro",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "vf08",
+      "texto": "Qual o impacto no caixa se o banco executar a garantia de recebíveis no mês que vem?",
+      "rotulo": "financeiro",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "vf09",
+      "texto": "Prepare o quadro de usos e fontes para o plano de recuperação.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": false
+    },
+    {
+      "id": "vf10",
+      "texto": "Calcule a taxa interna de retorno do empreendimento com as vendas realizadas até agora.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "vi01",
+      "texto": "Levante quem tinha acesso de aprovação no sistema quando os pagamentos duplicados foram liberados.",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "investigacao",
+      "ok": true
+    },
+    {
+      "id": "vi02",
+      "texto": "Procure conversas no Teams sobre adiar a divulgação dos números ao banco.",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "investigacao",
+      "ok": true
+    },
+    {
+      "id": "vi03",
+      "texto": "Descubra se a empresa que comprou os terrenos pertence a algum ex-executivo.",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "investigacao",
+      "ok": true
+    },
+    {
+      "id": "vi04",
+      "texto": "Os relatórios mensais mudaram de formato logo depois da troca do controller. Investigue o motivo.",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "investigacao",
+      "ok": true
+    },
+    {
+      "id": "vi05",
+      "texto": "Por que o mesmo imóvel aparece como garantia em dois contratos com bancos diferentes?",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "investigacao",
+      "ok": true
+    },
+    {
+      "id": "vi06",
+      "texto": "Verifique se as assinaturas digitais dos contratos de 2022 foram feitas pelos certificados certos.",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "juridico",
+      "ok": false
+    },
+    {
+      "id": "vi07",
+      "texto": "Há indícios de que algum gestor sabia do default antes de comunicar ao conselho?",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "investigacao",
+      "ok": true
+    },
+    {
+      "id": "vi08",
+      "texto": "Quais e-mails foram enviados para domínios externos pessoais por diretores no último ano?",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "investigacao",
+      "ok": true
+    },
+    {
+      "id": "vi09",
+      "texto": "Não estou entendendo como a dívida cresceu tanto. O que aconteceu?",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "vi10",
+      "texto": "Esse fornecedor recebeu adiantamentos todo mês sem entregar nada. Tem algo errado aí?",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "investigacao",
+      "ok": true
+    }
+  ]
+}

@@ -2,48 +2,33 @@
   "resumo": {
     "backend": "llama",
     "casos": 60,
-    "acerto": 0.767,
-    "acerto_dificeis": 0.6,
+    "acerto": 0.967,
+    "acerto_dificeis": 0.95,
     "acerto_por_classe": {
       "juridico": 1.0,
-      "financeiro": 0.9,
-      "investigacao": 0.4
+      "financeiro": 1.0,
+      "investigacao": 0.9
     },
     "confusao": {
       "juridico": {
         "juridico": 20
       },
       "financeiro": {
-        "investigacao": 1,
-        "financeiro": 18,
-        "juridico": 1
+        "financeiro": 20
       },
       "investigacao": {
-        "financeiro": 6,
-        "investigacao": 8,
-        "juridico": 6
+        "investigacao": 18,
+        "juridico": 2
       }
     },
     "latencia_ms": {
-      "p50": 814,
-      "p95": 1199,
-      "total_s": 50.9
+      "p50": 767,
+      "p95": 950,
+      "total_s": 46.7
     },
     "erros": [
-      "f01",
-      "f13",
-      "i01",
-      "i02",
-      "i05",
-      "i08",
-      "i12",
-      "i13",
-      "i14",
-      "i15",
-      "i16",
-      "i17",
-      "i19",
-      "i20"
+      "i04",
+      "i17"
     ]
   },
   "linhas": [
@@ -212,8 +197,8 @@
       "texto": "Quero analisar a DRE deste trimestre.",
       "rotulo": "financeiro",
       "dificil": false,
-      "previsto": "investigacao",
-      "ok": false
+      "previsto": "financeiro",
+      "ok": true
     },
     {
       "id": "f02",
@@ -308,8 +293,8 @@
       "texto": "A taxa efetiva do contrato está acima do que foi negociado? Quero o CET calculado.",
       "rotulo": "financeiro",
       "dificil": true,
-      "previsto": "juridico",
-      "ok": false
+      "previsto": "financeiro",
+      "ok": true
     },
     {
       "id": "f14",
@@ -372,16 +357,16 @@
       "texto": "Encontre e-mails em que executivos falam sobre esconder a situação financeira do conselho.",
       "rotulo": "investigacao",
       "dificil": false,
-      "previsto": "financeiro",
-      "ok": false
+      "previsto": "investigacao",
+      "ok": true
     },
     {
       "id": "i02",
       "texto": "Há fornecedores com nomes parecidos que receberam pagamentos no mesmo dia? Rastreie possíveis homônimos.",
       "rotulo": "investigacao",
       "dificil": false,
-      "previsto": "financeiro",
-      "ok": false
+      "previsto": "investigacao",
+      "ok": true
     },
     {
       "id": "i03",
@@ -396,16 +381,16 @@
       "texto": "Esse relatório de auditoria cita um evento de 2025, mas foi datado em 2023. Isso é anacronismo?",
       "rotulo": "investigacao",
       "dificil": false,
-      "previsto": "investigacao",
-      "ok": true
+      "previsto": "juridico",
+      "ok": false
     },
     {
       "id": "i05",
       "texto": "Mapeie a linha do tempo das decisões da diretoria que antecederam o colapso de caixa.",
       "rotulo": "investigacao",
       "dificil": false,
-      "previsto": "financeiro",
-      "ok": false
+      "previsto": "investigacao",
+      "ok": true
     },
     {
       "id": "i06",
@@ -428,8 +413,8 @@
       "texto": "Cruze os CPFs dos signatários dos contratos com a lista de funcionários desligados.",
       "rotulo": "investigacao",
       "dificil": false,
-      "previsto": "juridico",
-      "ok": false
+      "previsto": "investigacao",
+      "ok": true
     },
     {
       "id": "i09",
@@ -460,40 +445,40 @@
       "texto": "Os pagamentos ao escritório de advocacia cresceram 300% sem novos processos. O que pode explicar?",
       "rotulo": "investigacao",
       "dificil": true,
-      "previsto": "financeiro",
-      "ok": false
+      "previsto": "investigacao",
+      "ok": true
     },
     {
       "id": "i13",
       "texto": "Uma planilha de controle tem valores redondos demais nos meses de fechamento. Pode ser manipulação?",
       "rotulo": "investigacao",
       "dificil": true,
-      "previsto": "financeiro",
-      "ok": false
+      "previsto": "investigacao",
+      "ok": true
     },
     {
       "id": "i14",
       "texto": "Por que o contrato com esse credor foi assinado fora da sede, num sábado, por um procurador desconhecido?",
       "rotulo": "investigacao",
       "dificil": true,
-      "previsto": "juridico",
-      "ok": false
+      "previsto": "investigacao",
+      "ok": true
     },
     {
       "id": "i15",
       "texto": "Houve favorecimento de algum credor nos pagamentos feitos às vésperas do pedido de recuperação?",
       "rotulo": "investigacao",
       "dificil": true,
-      "previsto": "financeiro",
-      "ok": false
+      "previsto": "investigacao",
+      "ok": true
     },
     {
       "id": "i16",
       "texto": "Descubra quem mandou apagar a pasta do SharePoint com os contratos de 2022.",
       "rotulo": "investigacao",
       "dificil": false,
-      "previsto": "juridico",
-      "ok": false
+      "previsto": "investigacao",
+      "ok": true
     },
     {
       "id": "i17",
@@ -516,16 +501,16 @@
       "texto": "Quais documentos ainda faltam no data room para fechar a apuração sobre o diretor financeiro?",
       "rotulo": "investigacao",
       "dificil": true,
-      "previsto": "juridico",
-      "ok": false
+      "previsto": "investigacao",
+      "ok": true
     },
     {
       "id": "i20",
       "texto": "Esses dois laudos de avaliação do mesmo imóvel têm valores muito diferentes. O que está por trás disso?",
       "rotulo": "investigacao",
       "dificil": true,
-      "previsto": "juridico",
-      "ok": false
+      "previsto": "investigacao",
+      "ok": true
     }
   ]
 }

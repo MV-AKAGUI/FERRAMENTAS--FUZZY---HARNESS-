@@ -3,6 +3,7 @@
 Uso (da raiz do repo):
     python evals/eval_roteador.py llama          # roteador atual (Llama 3.1 via Ollama)
     python evals/eval_roteador.py laya           # Laya (precisa do pacote laya instalado)
+    python evals/eval_roteador.py llama roteamento_validacao.jsonl   # outro conjunto
 
 Mede acerto geral, acerto nos casos difíceis, matriz de confusão e latência (1ª chamada é aquecimento, fora da conta).
 """
@@ -26,8 +27,8 @@ def backend_laya():
     return classificar
 
 
-def main(nome):
-    casos = [json.loads(l) for l in (AQUI / "roteamento.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
+def main(nome, arquivo="roteamento.jsonl"):
+    casos = [json.loads(l) for l in (AQUI / arquivo).read_text(encoding="utf-8").splitlines() if l.strip()]
     prever = {"llama": backend_llama, "laya": backend_laya}[nome]()
     prever(casos[0]["texto"])  # aquecimento: carrega o modelo
 
@@ -52,9 +53,9 @@ def main(nome):
         "erros": [l["id"] for l in linhas if not l["ok"]],
     }
     (AQUI / "resultados").mkdir(exist_ok=True)
-    (AQUI / "resultados" / f"{nome}.json").write_text(json.dumps({"resumo": resumo, "linhas": linhas}, ensure_ascii=False, indent=2), encoding="utf-8")
+    (AQUI / "resultados" / f"{nome}{'' if arquivo == 'roteamento.jsonl' else '_' + Path(arquivo).stem}.json").write_text(json.dumps({"resumo": resumo, "linhas": linhas}, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(resumo, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "llama")
+    main(*(sys.argv[1:] or ["llama"]))

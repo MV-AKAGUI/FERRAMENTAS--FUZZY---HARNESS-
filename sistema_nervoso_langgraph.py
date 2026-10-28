@@ -1,4 +1,5 @@
 import os
+import unicodedata
 from typing import TypedDict, Annotated, Sequence
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
 from langgraph.graph import StateGraph, END
@@ -17,6 +18,8 @@ class PatientState(TypedDict):
 # ==========================================
 # LLM Base: Usaremos o Llama 3.1 como Maestro (por enquanto)
 llm_maestro = ChatOllama(model="llama3.1")
+# Triagem é classificação: temperatura 0 (determinístico) e resposta curta (mais rápido)
+llm_roteador = ChatOllama(model="llama3.1", temperature=0, num_predict=8)
 
 def doctor_qwen(state: PatientState):
     """Especialista Financeiro"""
@@ -61,19 +64,22 @@ def roteador(state: PatientState):
     
     # Se a Dai não sabe, o Llama lê a mensagem e toma a decisão
     ultima_mensagem = state["messages"][-1].content
-    decision_prompt = f"""
-    Leia a queixa do paciente e responda APENAS com UMA PALAVRA:
-    - Se envolver leis, regras ou contratos, responda: juridico
-    - Se envolver dinheiro, planilhas ou lucros, responda: financeiro
-    - Se envolver pesquisa, anomalias ou dúvidas abertas, responda: investigacao
-    
-    Queixa: {ultima_mensagem}
-    """
-    
-    # O Llama faz a triagem profunda
-    resposta = llm_maestro.invoke(decision_prompt).content.strip().lower()
-    
-    if "juridico" in resposta: return "juridico"
+    # Ordem importa: investigação vem primeiro porque esses pedidos quase sempre citam contratos ou dinheiro
+    decision_prompt = f"""Você faz a triagem de pedidos numa auditoria forense. Classifique o pedido em UMA categoria, avaliando nesta ordem:
+
+1. investigacao: o pedido quer APURAR algo. Suspeita de fraude, favorecimento ou conflito de interesse; quem fez, quem sabia ou quem tinha acesso; por que algo aconteceu; padrões estranhos; documentos divergentes, apagados ou com datas incoerentes; vínculos entre pessoas e empresas; buscar e-mails, mensagens ou notícias; ou dúvida aberta sem tarefa definida. Vale mesmo que o pedido cite contratos ou valores.
+2. juridico: o pedido quer interpretar ou redigir algo legal. Validade de atos, cláusulas, leis, prazos processuais, garantias, responsabilidades, parecer ou minuta.
+3. financeiro: o pedido quer calcular ou analisar números. Saldos, juros, parcelas, fluxo de caixa, DRE, balanço, índices, projeções, conciliação de valores.
+
+Responda somente com uma palavra: investigacao, juridico ou financeiro.
+
+Pedido: {ultima_mensagem}"""
+
+    resposta = llm_roteador.invoke(decision_prompt).content.strip().lower()
+    resposta = unicodedata.normalize("NFKD", resposta).encode("ascii", "ignore").decode()
+
+    if "investig" in resposta: return "investigacao"
+    elif "juridico" in resposta: return "juridico"
     elif "financeiro" in resposta: return "financeiro"
     else: return "investigacao"
 

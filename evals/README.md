@@ -20,4 +20,15 @@ LAYA_CRITERIOS=ricos .venv-laya/Scripts/python.exe evals/eval_roteador.py laya
 
 Laya com confiança ≥ 0,9 cobre 21/60 casos com 81% de acerto: não serve como atalho para os casos fáceis.
 
-**Conclusão:** Laya zero-shot não substitui o roteador. É 8x mais rápido, mas perde 15 pontos de acerto e tende a mandar tudo para `financeiro`. Caminho para reavaliar: fine-tune do Laya com ~300–500 decisões reais rotuladas (notebook oficial em GPU gratuita do Kaggle) e rodar este mesmo eval. O ponto fraco do roteador atual é `investigacao` (40%).
+### Roteador v2 (prompt com critérios + temperatura 0), 28/10/2026
+
+`roteamento_validacao.jsonl` (30 casos) foi escrito **antes** do ajuste e não foi usado para calibrar o prompt.
+
+| Conjunto | Baseline (v1) | v2 | investigação v1 → v2 | p50 v2 |
+|---|---|---|---|---|
+| Desenvolvimento (60) | 76,7% | **96,7%** | 40% → 90% | 767 ms |
+| Validação (30) | 73,3% | **86,7%** | 30% → 80% | 791 ms |
+
+A distância entre 96,7% e 86,7% indica ajuste ao conjunto de desenvolvimento: o número confiável é o da validação. Erros restantes na validação: vj06, vf09, vi06, vi09. Próximo ganho real vem de pedidos reais rotulados, não de mais iterações de prompt.
+
+**Conclusão sobre o Laya:** Laya zero-shot não substitui o roteador. É 8x mais rápido, mas perde 15 pontos de acerto e tende a mandar tudo para `financeiro`. Caminho para reavaliar: fine-tune do Laya com ~300–500 decisões reais rotuladas (notebook oficial em GPU gratuita do Kaggle) e rodar este mesmo eval. O ponto fraco do roteador atual é `investigacao` (40%).
