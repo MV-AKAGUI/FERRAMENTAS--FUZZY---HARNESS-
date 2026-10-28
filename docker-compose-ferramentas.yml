@@ -7,7 +7,7 @@ services:
     container_name: cerebro_pgvector
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?suba com infisical run -- docker compose -f docker-compose-ferramentas.yml up -d}
       POSTGRES_DB: memoria_vetorial
     ports:
       - "5432:5432"
@@ -28,7 +28,7 @@ services:
     image: redis:7-alpine
     container_name: cache_redis
     ports:
-      - "6379:6379"
+      - "6381:6379"  # 6379 já é do sugoi_redis_cache (kan-sa), 6380 do dr-taylor-redis
     command: redis-server --appendonly yes
     volumes:
       - redis_data:/data

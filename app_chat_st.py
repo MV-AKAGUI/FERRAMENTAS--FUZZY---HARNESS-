@@ -6,7 +6,7 @@ from PIL import Image
 import base64
 from dotenv import load_dotenv
 
-load_dotenv()  # POSTGRES_PASSWORD vem do .env local (fora do git)
+load_dotenv()  # POSTGRES_PASSWORD vem do cofre: infisical run -- streamlit run app_chat_st.py
 
 def get_base64_image(image_path):
     with open(image_path, "rb") as img_file:
