@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/backend/package-lock.json
+      - run: npm ci
+      - run: npx prisma validate
+        env:
+          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+      - run: npm test
+
+  ferramentas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # shortcut: só as libs importadas por ferramentas/; o requirements.txt completo (torch/docling/whisper) é pesado demais pro CI, ampliar quando houver testes que precisem dele
+      - run: |
+          grep -i -E "^(requests|rapidfuzz|python-docx|openpyxl|pdfplumber|pikepdf|py7zr|pypdfium2|rarfile)==" requirements.txt > ci-req.txt
+          pip install pytest -r ci-req.txt
+      - run: python -m pytest tests -q

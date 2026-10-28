@@ -6,3 +6,7 @@ scratch/
 
 app/backend/node_modules
 
+
+.env
+.env.production
+app/tests/uat/UAT_CREDENCIAIS_USUARIOS.md

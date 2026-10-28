@@ -4,6 +4,9 @@ from langchain_ollama import OllamaEmbeddings
 import os
 from PIL import Image
 import base64
+from dotenv import load_dotenv
+
+load_dotenv()  # POSTGRES_PASSWORD vem do .env local (fora do git)
 
 def get_base64_image(image_path):
     with open(image_path, "rb") as img_file:
@@ -63,7 +66,7 @@ def get_db_connection():
         port="5432",
         database="memoria_vetorial",
         user="admin",
-        password="masterkey123"
+        password=os.environ["POSTGRES_PASSWORD"]
     )
 
 def setup_dai_memory():

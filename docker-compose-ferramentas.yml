@@ -7,7 +7,7 @@ services:
     container_name: cerebro_pgvector
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: masterkey123
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env}
       POSTGRES_DB: memoria_vetorial
     ports:
       - "5432:5432"
@@ -22,6 +22,22 @@ services:
     ports:
       - "8000:8000"
     restart: unless-stopped
+
+  # 2b. Cache / Filas (REDIS_URL do backend)
+  redis:
+    image: redis:7-alpine
+    container_name: cache_redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
 
   # 3. Automação e Integrações (n8n - Item 4)
   n8n:
@@ -69,6 +85,7 @@ services:
 
 volumes:
   pg_data:
+  redis_data:
   n8n_data:
   searxng_data:
   gitness_data:
