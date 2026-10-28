@@ -1,0 +1,539 @@
+{
+  "resumo": {
+    "backend": "laya",
+    "casos": 60,
+    "acerto": 0.617,
+    "acerto_dificeis": 0.35,
+    "acerto_por_classe": {
+      "juridico": 0.55,
+      "financeiro": 1.0,
+      "investigacao": 0.3
+    },
+    "confusao": {
+      "juridico": {
+        "juridico": 11,
+        "financeiro": 9
+      },
+      "financeiro": {
+        "financeiro": 20
+      },
+      "investigacao": {
+        "financeiro": 12,
+        "investigacao": 6,
+        "juridico": 2
+      }
+    },
+    "latencia_ms": {
+      "p50": 104,
+      "p95": 324,
+      "total_s": 8.4
+    },
+    "erros": [
+      "j02",
+      "j03",
+      "j07",
+      "j12",
+      "j14",
+      "j15",
+      "j16",
+      "j17",
+      "j20",
+      "i01",
+      "i02",
+      "i03",
+      "i05",
+      "i09",
+      "i10",
+      "i11",
+      "i12",
+      "i13",
+      "i14",
+      "i15",
+      "i17",
+      "i18",
+      "i19"
+    ]
+  },
+  "linhas": [
+    {
+      "id": "j01",
+      "texto": "Preciso de um parecer sobre a validade da cláusula de vencimento antecipado da CCB assinada com o banco.",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "j02",
+      "texto": "A escritura de emissão do CRI permite substituir o agente fiduciário sem assembleia?",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "j03",
+      "texto": "Revise o contrato social da SPE e diga se o sócio minoritário tem direito de veto.",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "j04",
+      "texto": "Qual o prazo para contestar a ação de execução de título extrajudicial que recebemos ontem?",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "j05",
+      "texto": "A recuperação judicial suspende as cobranças dos credores fiduciários? O que diz a Lei 11.101?",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "j06",
+      "texto": "Esse termo de confissão de dívida tem força de título executivo mesmo sem duas testemunhas?",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "j07",
+      "texto": "Analise se a cessão fiduciária de recebíveis do contrato foi registrada corretamente no cartório.",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "j08",
+      "texto": "O diretor pode responder pessoalmente pelos atos de gestão que levaram ao default? Quero a base legal.",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "j09",
+      "texto": "Redija uma notificação extrajudicial ao FIDC informando o descumprimento do covenant pelo cedente.",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "j10",
+      "texto": "A LGPD impede que a gente compartilhe os CPFs dos sócios com a consultoria de auditoria?",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "j11",
+      "texto": "Quais regras da CVM se aplicam à oferta pública de debêntures incentivadas que estamos estruturando?",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "j12",
+      "texto": "O aditivo contratual de 2023 alterou a taxa sem assinatura do avalista. Isso vale?",
+      "rotulo": "juridico",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "j13",
+      "texto": "O banco cobrou multa de 10% por atraso, mas o contrato fala em 2%. Temos base para revisar a cobrança na justiça?",
+      "rotulo": "juridico",
+      "dificil": true,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "j14",
+      "texto": "Na assembleia de credores, o voto do banco com garantia real conta em qual classe?",
+      "rotulo": "juridico",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "j15",
+      "texto": "O conselho aprovou o empréstimo sem quórum previsto no estatuto. Essa aprovação pode ser anulada?",
+      "rotulo": "juridico",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "j16",
+      "texto": "Os juros capitalizados mensalmente estão expressamente pactuados no contrato ou dá para alegar anatocismo?",
+      "rotulo": "juridico",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "j17",
+      "texto": "Precisamos saber se a garantia de alienação fiduciária do terreno da SPE cobre também as unidades construídas.",
+      "rotulo": "juridico",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "j18",
+      "texto": "O acordo de leniência com o órgão regulador impede que os executivos sejam processados individualmente?",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "j19",
+      "texto": "Contrato de prestação de serviço com a consultoria não tem cláusula de confidencialidade. Quais os riscos?",
+      "rotulo": "juridico",
+      "dificil": false,
+      "previsto": "juridico",
+      "ok": true
+    },
+    {
+      "id": "j20",
+      "texto": "A procuração dada ao ex-CFO ainda está válida para assinar operações de crédito em nome da holding?",
+      "rotulo": "juridico",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "f01",
+      "texto": "Quero analisar a DRE deste trimestre.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f02",
+      "texto": "Calcule o saldo devedor atualizado da CCB pela tabela Price com juros de 1,8% ao mês.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f03",
+      "texto": "Monte o fluxo de caixa projetado das SPEs do MCMV para os próximos 12 meses.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f04",
+      "texto": "Qual foi o EBITDA consolidado de 2023 e quanto ele caiu em relação a 2022?",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f05",
+      "texto": "Concilie o extrato bancário de março com o razão contábil e aponte as diferenças de valor.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f06",
+      "texto": "Faça a planilha de amortização das debêntures com carência de 24 meses.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f07",
+      "texto": "Qual o custo médio ponderado da dívida da holding considerando todos os contratos?",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f08",
+      "texto": "Compare o serviço da dívida previsto com o efetivamente pago entre 2021 e 2024.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f09",
+      "texto": "Preciso do índice de liquidez corrente e da alavancagem líquida no balanço de dezembro.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f10",
+      "texto": "Quanto pagaríamos de IOF e juros se antecipássemos os recebíveis do FIDC hoje?",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f11",
+      "texto": "Atualize os valores das parcelas em atraso pelo IPCA mais 1% ao mês até a data de hoje.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f12",
+      "texto": "O banco diz que devemos R$ 4,2 milhões. Recalcule o saldo para conferir se o número bate.",
+      "rotulo": "financeiro",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f13",
+      "texto": "A taxa efetiva do contrato está acima do que foi negociado? Quero o CET calculado.",
+      "rotulo": "financeiro",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f14",
+      "texto": "Projete quanto da dívida é renegociável sem estourar o covenant de dívida líquida sobre EBITDA.",
+      "rotulo": "financeiro",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f15",
+      "texto": "Separe as despesas financeiras por credor e mostre qual banco consumiu mais caixa no ano.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f16",
+      "texto": "Quanto do plano de recuperação cabe no caixa se o deságio for de 40% para os quirografários?",
+      "rotulo": "financeiro",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f17",
+      "texto": "Gere o gráfico da evolução da dívida bruta de 2021 a 2024 com a taxa de crescimento anual.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f18",
+      "texto": "Quanto vale a carteira de recebíveis a valor presente descontada a 15% ao ano?",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f19",
+      "texto": "O lucro das SPEs foi suficiente para cobrir os juros da holding em 2022?",
+      "rotulo": "financeiro",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "f20",
+      "texto": "Faça o orçamento de caixa mínimo para pagar folha, fornecedores e parcelas bancárias em novembro.",
+      "rotulo": "financeiro",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": true
+    },
+    {
+      "id": "i01",
+      "texto": "Encontre e-mails em que executivos falam sobre esconder a situação financeira do conselho.",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "i02",
+      "texto": "Há fornecedores com nomes parecidos que receberam pagamentos no mesmo dia? Rastreie possíveis homônimos.",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "i03",
+      "texto": "Verifique se algum sócio de fornecedor também é parente de diretor da empresa.",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "i04",
+      "texto": "Esse relatório de auditoria cita um evento de 2025, mas foi datado em 2023. Isso é anacronismo?",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "investigacao",
+      "ok": true
+    },
+    {
+      "id": "i05",
+      "texto": "Mapeie a linha do tempo das decisões da diretoria que antecederam o colapso de caixa.",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "i06",
+      "texto": "Busque na internet notícias sobre a consultoria que assinou o laudo de avaliação.",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "investigacao",
+      "ok": true
+    },
+    {
+      "id": "i07",
+      "texto": "Tem alguma coisa estranha nesses documentos? Não sei bem o que procurar.",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "investigacao",
+      "ok": true
+    },
+    {
+      "id": "i08",
+      "texto": "Cruze os CPFs dos signatários dos contratos com a lista de funcionários desligados.",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "investigacao",
+      "ok": true
+    },
+    {
+      "id": "i09",
+      "texto": "Identifique padrões fora do comum nos horários de aprovação de pagamentos no sistema.",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "i10",
+      "texto": "Quem eram as pessoas que participavam das reuniões com o banco antes da renegociação?",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "i11",
+      "texto": "Pesquise se a empresa de fachada que aparece nas notas fiscais tem endereço real.",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "i12",
+      "texto": "Os pagamentos ao escritório de advocacia cresceram 300% sem novos processos. O que pode explicar?",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "i13",
+      "texto": "Uma planilha de controle tem valores redondos demais nos meses de fechamento. Pode ser manipulação?",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "i14",
+      "texto": "Por que o contrato com esse credor foi assinado fora da sede, num sábado, por um procurador desconhecido?",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "i15",
+      "texto": "Houve favorecimento de algum credor nos pagamentos feitos às vésperas do pedido de recuperação?",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "juridico",
+      "ok": false
+    },
+    {
+      "id": "i16",
+      "texto": "Descubra quem mandou apagar a pasta do SharePoint com os contratos de 2022.",
+      "rotulo": "investigacao",
+      "dificil": false,
+      "previsto": "investigacao",
+      "ok": true
+    },
+    {
+      "id": "i17",
+      "texto": "Compare as versões do mesmo contrato encontradas em pastas diferentes e aponte divergências.",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "juridico",
+      "ok": false
+    },
+    {
+      "id": "i18",
+      "texto": "A empresa de consultoria recebeu bônus de sucesso numa renegociação que piorou a dívida. Investigue.",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "i19",
+      "texto": "Quais documentos ainda faltam no data room para fechar a apuração sobre o diretor financeiro?",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "financeiro",
+      "ok": false
+    },
+    {
+      "id": "i20",
+      "texto": "Esses dois laudos de avaliação do mesmo imóvel têm valores muito diferentes. O que está por trás disso?",
+      "rotulo": "investigacao",
+      "dificil": true,
+      "previsto": "investigacao",
+      "ok": true
+    }
+  ]
+}
